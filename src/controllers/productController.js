@@ -1,11 +1,13 @@
 import ProductDTO from "./dto/productDTO.js"
+
+
 //import { product } from "../entities/product"
-/*
+
 import { 
     getProductsDB, 
     saveProductDB
 } from "../repositories/productRepository.js"
-*/
+
 /*
 const PRODUCT = [
     {
@@ -32,6 +34,7 @@ export const getProducts = async (request, response) => {
     // cuando reciba los entities
     // debe crear los productDTO y devolverlos
 
+    /*
     let products = []
     let product1 = new ProductDTO(1,10,"Papas fritas",290.00, "null");
     let product2 = new ProductDTO(2,15,"Hamburguesa",580.00, "null");
@@ -41,5 +44,19 @@ export const getProducts = async (request, response) => {
     
     response.status(200);
     response.json(products);
+    */
+    try {
+
+        let products = await getProductsDB();
+
+        response.status(200).json(products);
+
+    } catch (error) {
+
+        response.status(500).json({ error: "Intente despues..." })
+
+    }
+
+
 }
 
