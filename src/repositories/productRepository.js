@@ -1,7 +1,7 @@
 
 import db from '../db/index.js'
 
-export const getProductsDB = async () => {
+export const findAllProductsDB = async () => {
     /*
         conectar con la BD
         ejecutar un Select a la tabla productos
@@ -11,7 +11,7 @@ export const getProductsDB = async () => {
     try {
 
         const productsDB = await db.query(
-            'SELECT * FROM Product',
+            "SELECT * FROM Product",
             { type: db.QueryTypes.SELECT }
         );
         console.log(productsDB);
@@ -24,36 +24,21 @@ export const getProductsDB = async () => {
 
     }
 }
-/*
-getProductsDB ("/products/buscar/:palabraParam" ,async (request,response) => {
-    const palabra = request.params.palabraParam;
-    try{
-        const products = await db.query("SELECT * FROM products where productNumber LIKE :palabraQuery",{
 
-            type: db.QueryTypes.SELECT,
-            replacements :{palabraQuery: `%${palabra}%`},
-        }) 
+export const findProductByIdDB = async (productId) => {
 
-    }catch(error){
-
-    }
-})
-*/
-/*
-export const saveProductDB = async (request, response) => {
-
-   console.log(request.body)
     try {
 
-        const productsDB = await db.query(
-            "INSERT INTO Product (productId, productNumber, productName, productPrice, productPhoto) values(?,?,?,?,?)",
-            {
-                type: db.QueryTypes.INSERT,
-                replacements: [request.body.productId, request.body.productNumber, request.body.productName, request.body.productPrice, request.body.productPhoto],
-            }
+        const product = await db.query(
+            "SELECT * FROM Product WHERE productId = ?",
+            { type: db.QueryTypes.SELECT, replacements: [productId] }
         );
-        console.log(productsDB);
-        return productsDB;
+
+        if (product.length == 0) {
+            throw new Error("Can't find product.productId = " + productId);
+        }
+
+        return product;
 
     } catch (error) {
 
@@ -62,7 +47,7 @@ export const saveProductDB = async (request, response) => {
 
     }
 }
-*/
+
 export const saveProductDB = async (product) => {
 
     try {
@@ -82,5 +67,23 @@ export const saveProductDB = async (product) => {
         console.error(error.message);
         throw error;
 
+    }
+}
+
+export const deleteProductDB = async (productId) => {
+
+    try {
+
+        const result = await db.query(
+            "DELETE FROM Product WHERE productId = ?",
+            { type: db.QueryTypes.DELETE, replacements: [productId] }
+        );
+
+        return result;
+
+    } catch (error) {
+
+        console.error(error.message);
+        throw error;
     }
 }

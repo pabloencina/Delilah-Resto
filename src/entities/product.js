@@ -34,10 +34,10 @@ export class Product {
         }
 
         //object.productPhoto
-        /*if (object.productPhoto === null || object.productPhoto === undefined) {
+        if (object.productPhoto === null || object.productPhoto === undefined) {
             throw new Error("productPhoto can't be null or udefined");
         } else if (!(typeof object.productPhoto === 'string')) {
-            throw new Error(" must be a string");
-        }*/
+            throw new Error("productPhoto must be a string");
+        }
     }
 }

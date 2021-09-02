@@ -2,8 +2,10 @@ import { request, response } from "express";
 import { Product } from "../entities/product.js"
 
 import { 
-    getProductsDB, 
-    saveProductDB
+    findAllProductsDB, 
+    saveProductDB,
+    deleteProductDB,
+    findProductByIdDB
 } from "../repositories/productRepository.js"
 
 
@@ -13,7 +15,7 @@ export const getProducts = async (request, response) => {
     // debe crear los productDTO y devolverlos
     try {
 
-        let products = await getProductsDB();
+        let products = await findAllProductsDB();
         response.status(200).json(products);
 
     } catch (error) {
@@ -43,7 +45,39 @@ export const postProducts = async (request, response) => {
 
     } catch (error) {
 
-        response.status(500).json({ error : error.message })
+        response.status(500).json({ error : error.message });
 
     }
+}
+
+export const deleteProducts = async (request, response) => {
+
+    try {
+
+        const productId = validateId(request.params.productId);
+
+        await findProductByIdDB(productId);
+
+        await deleteProductDB(productId);
+
+        response.status(200).json({message: "Product("+ productId + ") deleted successfully."});
+
+    } catch (error) {
+
+        response.status(500).json({ error: error.message })
+
+    }
+}
+
+const validateId = (id) => {
+    
+    if (id === null || id === undefined) {
+        throw new Error("Id can't be null or undefined.");
+    } 
+    let idNum = parseInt(id);
+    if (idNum <= 0) {
+        throw new Error("Id can't be 0 or minor.");
+    }
+    return idNum;
+
 }
