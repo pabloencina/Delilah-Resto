@@ -1,31 +1,12 @@
-import ProductDTO from "./dto/productDTO.js"
-
-
-import { Product } from "../entities/product"
+import { request, response } from "express";
+import { Product } from "../entities/product.js"
 
 import { 
     getProductsDB, 
     saveProductDB
 } from "../repositories/productRepository.js"
-/*
-const PRODUCT = [
-    {
-        id: 1,
-        nombre: "Milanesa",
-        precio: "520"
-    },
-    {
-        id: 2,
-        nombre: "Pablo",
-        precio: "Argentina"
-    },
-    {
-        id: 3,
-        nombre: "Andre",
-        pais: "Colombia"
-    },
-];
-*/
+
+
 export const getProducts = async (request, response) => {
     // getProductsDB
     // cuando reciba los entities
@@ -41,6 +22,7 @@ export const getProducts = async (request, response) => {
 
     }
 }
+ 
 
 export const postProducts = async (request, response) => {
     // saveProductsDB
@@ -48,14 +30,20 @@ export const postProducts = async (request, response) => {
     // debe crear un Product y guardarlo
     try {
 
-        let products = await saveProductDB(request, response);
+        //let products = await saveProductDB(request, response);
+        const body = request.body;
 
+        Product.validate(body);
+
+        const product = new Product(body.productId, body.productNumber, body.productName, body.productPrice, body.productPhoto);
+        
+        let products = await saveProductDB(product);
 
         response.status(200).json(products);
 
     } catch (error) {
 
-        response.status(500).json({ error: "Intente más tarde..." })
+        response.status(500).json({ error : error.message })
 
     }
 }
