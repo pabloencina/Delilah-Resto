@@ -22,6 +22,7 @@ ENGINE = InnoDB
 
 CREATE TABLE IF NOT EXISTS `delilah-resto`.`Administrator` (
   `administratorId` INT NOT NULL AUTO_INCREMENT,
+  `identificationNumber` VARCHAR(20) NOT NULL,
   `userId` INT NOT NULL,
   PRIMARY KEY (`administratorId`),
   INDEX `fk_administrator_user_idx` (`userId` ASC) VISIBLE,
@@ -86,6 +87,22 @@ CREATE TABLE IF NOT EXISTS `delilah-resto`.`OrderDetail` (
   CONSTRAINT `fk_order_detail_order`
     FOREIGN KEY (`orderId`)
     REFERENCES `delilah-resto`.`Order` (`orderId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+
+CREATE TABLE IF NOT EXISTS `delilah-resto`.`FavoriteProducts` (
+  `customerId` INT NOT NULL,
+  `productId` INT NOT NULL,
+  PRIMARY KEY (`customerId`, `productId`),
+  CONSTRAINT `fk_FavoriteProducts_customer`
+    FOREIGN KEY (`customerId`)
+    REFERENCES `delilah-resto`.`Customer` (`customerId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_FavoriteProducts_product`
+    FOREIGN KEY (`productId`)
+    REFERENCES `delilah-resto`.`Product` (`productId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB

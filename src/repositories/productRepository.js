@@ -1,4 +1,6 @@
 
+import { response } from 'express';
+import { getProducts } from '../controllers/productController.js';
 import db from '../db/index.js'
 
 export const findAllProductsDB = async () => {
@@ -25,6 +27,7 @@ export const findAllProductsDB = async () => {
     }
 }
 
+
 export const findProductByIdDB = async (productId) => {
 
     try {
@@ -35,7 +38,7 @@ export const findProductByIdDB = async (productId) => {
         );
 
         if (product.length == 0) {
-            throw new Error("Can't find product.productId = " + productId);
+            return null;
         }
 
         return product;
@@ -47,6 +50,7 @@ export const findProductByIdDB = async (productId) => {
 
     }
 }
+
 
 export const saveProductDB = async (product) => {
 
@@ -69,6 +73,29 @@ export const saveProductDB = async (product) => {
 
     }
 }
+
+
+export const updateProductDB = async (productId, product) => {
+
+    try {
+
+        const result = await db.query(
+            "UPDATE Product SET productNumber = ?, productName = ?, productPrice = ?, productPhoto = ? WHERE productId = ?",
+            {
+                type: db.QueryTypes.UPDATE,
+                replacements: [product.productNumber, product.productName, product.productPrice, product.productPhoto, productId],
+            }
+        );
+        console.log(result)
+        return result;
+
+    } catch (error) {
+
+        console.error(error.message);
+        throw error;
+    }
+}
+
 
 export const deleteProductDB = async (productId) => {
 
