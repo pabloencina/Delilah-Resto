@@ -6,7 +6,7 @@ export const validateId = (id) => {
         throw new InvalidIdError("Id can't be null or undefined.");
     }
     let idNum = parseInt(id);
-    console.log(idNum);
+    
     if (isNaN(idNum)) {
         throw new InvalidIdError("Id must be a number.");
     }

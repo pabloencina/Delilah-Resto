@@ -63,14 +63,12 @@ export const saveProductDB = async (product) => {
                 replacements: [product.productId, product.productNumber, product.productName, product.productPrice, product.productPhoto],
             }
         );
-        console.log(productsDB);
         return productsDB;
 
     } catch (error) {
 
         console.error(error.message);
         throw error;
-
     }
 }
 

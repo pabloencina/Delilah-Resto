@@ -1,8 +1,7 @@
-import { request, response } from "express";
 import { Product } from "../entities/product.js"
-
-import { 
-    findAllProductsDB, 
+import { InvalidIdError, InvalidObjectError } from "../error.js"
+import {
+    findAllProductsDB,
     saveProductDB,
     updateProductDB,
     deleteProductDB,
@@ -26,7 +25,7 @@ export const getProducts = async (request, response) => {
 
     }
 }
- 
+
 
 export const postProducts = async (request, response) => {
     // saveProductsDB
@@ -39,14 +38,20 @@ export const postProducts = async (request, response) => {
         Product.validate(body);
 
         const product = new Product(body.productId, body.productNumber, body.productName, body.productPrice, body.productPhoto);
-        
+
         let products = await saveProductDB(product);
 
         response.status(200).json(products);
 
     } catch (error) {
 
-        response.status(500).json({ error : error.message });
+        if (error instanceof InvalidIdError) {
+            response.status(400).json({ error: error.message });
+        } else if (error instanceof InvalidObjectError) {
+            response.status(400).json({ error: error.message });
+        } else {
+            response.status(500).json({ error: error.message });
+        }
 
     }
 }
@@ -60,7 +65,7 @@ export const putProducts = async (request, response) => {
 
         const productDB = await findProductByIdDB(productId);
 
-        if(productDB === null){
+        if (productDB === null) {
             response.status(404).json({ error: "Can't find product.productId = " + productId })
         }
         // validar el producto que viene en el body del servicio
@@ -75,17 +80,17 @@ export const putProducts = async (request, response) => {
 
         await updateProductDB(productId, product);
 
-        response.status(200).json({message: "Product("+ productId + ") updated successfully."});
+        response.status(200).json({ message: "Product(" + productId + ") updated successfully." });
 
     } catch (error) {
 
-        if(error instanceof InvalidIdError){
+        if (error instanceof InvalidIdError) {
+            response.status(400).json({ error: error.message });
+        } else if (error instanceof InvalidObjectError) {
             response.status(400).json({ error: error.message });
         } else {
             response.status(500).json({ error: error.message });
         }
-
-
     }
 }
 
@@ -98,22 +103,22 @@ export const deleteProducts = async (request, response) => {
 
         const productDB = await findProductByIdDB(productId);
 
-        if(productDB === null){
+        if (productDB === null) {
             response.status(404).json({ error: "Can't find product.productId = " + productId })
         }
 
         await deleteProductDB(productId);
 
-        response.status(200).json({message: "Product("+ productId + ") deleted successfully."});
+        response.status(200).json({ message: "Product(" + productId + ") deleted successfully." });
 
     } catch (error) {
-        if(error instanceof InvalidIdError){
+        if (error instanceof InvalidIdError) {
             response.status(400).json({ error: error.message });
         } else {
             response.status(500).json({ error: error.message });
         }
 
-    } 
+    }
 }
 
 
