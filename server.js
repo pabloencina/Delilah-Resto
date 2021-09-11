@@ -12,6 +12,7 @@ import helmet from "helmet";
 import jsonwebtoken from "jsonwebtoken"
 
 import productRoutes from "./src/routes/productRoutes.js";
+import customerRoutes from "./src/routes/customerRoutes.js";
 // const otraLibreria = require("otraLibreria")
 
 //2- Crear la instancia de Express.
@@ -34,5 +35,6 @@ server.use(helmet())
 
 // server.set('ProductController.js', path.join(__dirname,'ProductController.js'));
 server.use(productRoutes);
+server.use(customerRoutes)
 server.listen(server.get("port"))
 console.log(`se ha iniciado el servidor en el puerto ${PORT}`);
