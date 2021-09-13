@@ -1,4 +1,3 @@
-
 import { response } from 'express';
 import { getProducts } from '../controllers/productController.js';
 import db from '../db/index.js'

@@ -1,9 +1,8 @@
 import { Customer } from "../entities/customer.js"
 import { InvalidIdError, InvalidObjectError } from "../error.js"
 import {
-    findAllCustomersDB
-    //findAllProductsDB,
-    //saveProductDB,
+    findAllCustomersDB,
+    saveProductDB,
     //updateProductDB,
     //deleteProductDB,
     //findProductByIdDB
@@ -24,23 +23,21 @@ export const getCustomers = async (request, response) => {
 
     }
 }
+console.log(getCustomers)
 
-/*
-export const postProducts = async (request, response) => {
-    // saveProductsDB
-    // cuando reciba el request
-    // debe crear un Product y guardarlo
+export const postCustomers = async (request, response) => {
+    
     try {
         //let products = await saveProductDB(request, response);
         const body = request.body;
 
-        Product.validate(body);
+        Customer.validate(body);
 
-        const product = new Product(body.productId, body.productNumber, body.productName, body.productPrice, body.productPhoto);
+        const customer = new Customer(body.customerId, body.address, body.user, body.userId, body.name, body.surname, body.email, body.phone, body.password);
 
-        let products = await saveProductDB(product);
+        let customers = await saveProductDB(customer);
 
-        response.status(200).json(products);
+        response.status(200).json(customers);
 
     } catch (error) {
 
@@ -51,11 +48,10 @@ export const postProducts = async (request, response) => {
         } else {
             response.status(500).json({ error: error.message });
         }
-
     }
 }
 
-
+/*
 export const putProducts = async (request, response) => {
 
     try {

@@ -1,6 +1,6 @@
 import { InvalidObjectError } from "../error.js";
 export class Customer {
-    constructor(customerId, address, userId, name, surname, email, phone, password) {
+    constructor(customerId, address,  userId, name, surname, email, phone, password) {
         this.customerId = customerId;
         this.address = address;
         this.user = {
