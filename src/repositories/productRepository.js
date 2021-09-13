@@ -1,5 +1,3 @@
-import { response } from 'express';
-import { getProducts } from '../controllers/productController.js';
 import db from '../db/index.js'
 
 export const findAllProductsDB = async () => {
@@ -55,14 +53,15 @@ export const saveProductDB = async (product) => {
 
     try {
 
-        const productsDB = await db.query(
+        const responseDB = await db.query(
             "INSERT INTO Product (productId, productNumber, productName, productPrice, productPhoto) values(?,?,?,?,?)",
             {
                 type: db.QueryTypes.INSERT,
-                replacements: [product.productId, product.productNumber, product.productName, product.productPrice, product.productPhoto],
+                replacements: [null, product.productNumber, product.productName, product.productPrice, product.productPhoto],
             }
         );
-        return productsDB;
+        product.productId = responseDB[0];
+        return product;
 
     } catch (error) {
 

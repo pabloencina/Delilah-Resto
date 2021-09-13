@@ -9,7 +9,9 @@ const { extname } = require("path");
 import compression from "compression";
 import express from "express";
 import helmet from "helmet";
-import jsonwebtoken from "jsonwebtoken"
+import jsonwebtoken from "jsonwebtoken";
+import expressRateLimit from "express-rate-limit";
+import expressJwt from "express-jwt";
 
 import productRoutes from "./src/routes/productRoutes.js";
 import customerRoutes from "./src/routes/customerRoutes.js";

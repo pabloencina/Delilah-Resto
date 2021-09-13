@@ -1,12 +1,14 @@
 import { Customer } from "../entities/customer.js"
+import { User } from "../entities/user.js"
 import { InvalidIdError, InvalidObjectError } from "../error.js"
 import {
     findAllCustomersDB,
-    saveProductDB,
+    saveCustomerDB,
     //updateProductDB,
     //deleteProductDB,
     //findProductByIdDB
 } from "../repositories/customerRepository.js"
+import { saveUserDB } from "../repositories/userRepository.js";
 
 import { validateId } from "./idValidator.js";
 
@@ -15,6 +17,8 @@ export const getCustomers = async (request, response) => {
     try {
 
         let customers = await findAllCustomersDB();
+        //Buscar todos los usuarios 
+        //En bucle recorrer todos los customers y agregarle el usuario que corresponde
         response.status(200).json(customers);
 
     } catch (error) {
@@ -23,21 +27,27 @@ export const getCustomers = async (request, response) => {
 
     }
 }
-console.log(getCustomers)
 
 export const postCustomers = async (request, response) => {
     
     try {
-        //let products = await saveProductDB(request, response);
+        
         const body = request.body;
+        const userBody = request.body.user;
 
+        User.validate(userBody);
+
+        const user = new User(null, userBody.name, userBody.surname, userBody.email, userBody.phone, userBody.password);
+
+        let userSaved = await saveUserDB(user);
+        
         Customer.validate(body);
 
-        const customer = new Customer(body.customerId, body.address, body.user, body.userId, body.name, body.surname, body.email, body.phone, body.password);
+        const customer = new Customer(null, body.address, userSaved);
 
-        let customers = await saveProductDB(customer);
+        let customerSaved = await saveCustomerDB(customer);
 
-        response.status(200).json(customers);
+        response.status(200).json(customerSaved);
 
     } catch (error) {
 

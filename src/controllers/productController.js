@@ -39,9 +39,9 @@ export const postProducts = async (request, response) => {
 
         const product = new Product(body.productId, body.productNumber, body.productName, body.productPrice, body.productPhoto);
 
-        let products = await saveProductDB(product);
+        let productSaved = await saveProductDB(product);
 
-        response.status(200).json(products);
+        response.status(200).json(productSaved);
 
     } catch (error) {
 

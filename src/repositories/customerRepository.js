@@ -1,5 +1,3 @@
-import { response } from 'express';
-import { getCustomers } from '../controllers/customerController.js';
 import db from '../db/index.js'
 import { Customer } from '../entities/customer.js';
 console.log(Customer)
@@ -48,18 +46,19 @@ export const findCustomerByIdDB = async (customerId) => {
 }
 
 
-export const saveProductDB = async (customer) => {
+export const saveCustomerDB = async (customer) => {
 
     try {
 
-        const customersDB = await db.query(
-            "INSERT INTO Customer (customerId, address, user, userId, name, surname, email, phone, password) values(?,?,?,?,?,?,?,?,?)",
+        const responseDB = await db.query(
+            "INSERT INTO Customer (customerId, address, userId) values(?,?,?)",
             {
                 type: db.QueryTypes.INSERT,
-                replacements: [customer.customerId, customer.address, customer.user, customer.userId, customer.name, customer.surname, customer.email, customer.phone, customer.password],
+                replacements: [null, customer.address, customer.user.userId],
             }
         );
-        return customersDB;
+        customer.customerId = responseDB[0];
+        return customer;
 
     } catch (error) {
 

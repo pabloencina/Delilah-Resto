@@ -9,7 +9,7 @@ import {
 const router = Router();
 
 router.get("/customers", getCustomers);
-router.post("/custoemers", postCustomers);
+router.post("/customers", postCustomers);
 //router.put("/products/:productId", putProducts);//params
 //router.delete("/products/:productId", deleteProducts); // param
 
