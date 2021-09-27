@@ -1,16 +1,16 @@
 import db from '../db/index.js';
 
-/*
-export const findAllCustomersDB = async () => {
+
+export const findAllUsersDB = async () => {
     
     try {
 
-        const customersDB = await db.query(
-            "SELECT * FROM Customer",
+        const usersDB = await db.query(
+            "SELECT * FROM User",
             { type: db.QueryTypes.SELECT }
         );
-        console.log(customersDB);
-        return customersDB;
+        console.log(usersDB);
+        return usersDB;
 
     } catch (error) {
 
@@ -21,20 +21,20 @@ export const findAllCustomersDB = async () => {
 }
 
 
-export const findCustomerByIdDB = async (customerId) => {
+export const findUserByIdDB = async (userId) => {
 
     try {
 
-        const customer = await db.query(
-            "SELECT * FROM Customer WHERE customerId = ?",
-            { type: db.QueryTypes.SELECT, replacements: [customerId] }
+        const user = await db.query(
+            "SELECT * FROM User WHERE userId = ?",
+            { type: db.QueryTypes.SELECT, replacements: [userId] }
         );
 
-        if (customer.length == 0) {
+        if (user.length == 0) {
             return null;
         }
 
-        return customer ;
+        return user ;
 
     } catch (error) {
 
@@ -43,7 +43,7 @@ export const findCustomerByIdDB = async (customerId) => {
 
     }
 }
-*/
+
 
 export const saveUserDB = async (user) => {
 

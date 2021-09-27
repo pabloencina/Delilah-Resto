@@ -14,10 +14,12 @@ CREATE TABLE IF NOT EXISTS `delilah-resto`.`User` (
   `userId` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(30) NULL,
   `surname` VARCHAR(30) NULL,
-  `email` VARCHAR(30) NULL,
+  `email` VARCHAR(30) NOT NULL,
   `phone` VARCHAR(15) NULL,
   `password` VARCHAR(20) NULL,
-  PRIMARY KEY (`userId`))
+  PRIMARY KEY (`userId`),
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE
+  )
 ENGINE = InnoDB
 
 CREATE TABLE IF NOT EXISTS `delilah-resto`.`Administrator` (
