@@ -1,6 +1,4 @@
 import db from '../db/index.js'
-import { Customer } from '../entities/customer.js';
-console.log(Customer)
 
 export const findAllCustomersDB = async () => {
     

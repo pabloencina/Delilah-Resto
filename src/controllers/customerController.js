@@ -1,6 +1,9 @@
 import { Customer } from "../entities/customer.js"
+
 import { User } from "../entities/user.js"
+
 import { InvalidIdError, InvalidObjectError } from "../error.js"
+
 import {
     findAllCustomersDB,
     saveCustomerDB,
@@ -8,9 +11,8 @@ import {
     //deleteProductDB,
     //findProductByIdDB
 } from "../repositories/customerRepository.js"
-import { saveUserDB } from "../repositories/userRepository.js";
 
-import { validateId } from "./idValidator.js";
+import { saveUserDB } from "../repositories/userRepository.js";
 
 export const getCustomers = async (request, response) => {
     
