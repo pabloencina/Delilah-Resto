@@ -2,7 +2,7 @@ import db from '../db/index.js';
 
 
 export const findAllUsersDB = async () => {
-    
+
     try {
 
         const usersDB = await db.query(
@@ -34,7 +34,7 @@ export const findUserByIdDB = async (userId) => {
             return null;
         }
 
-        return user ;
+        return user;
 
     } catch (error) {
 
@@ -44,6 +44,29 @@ export const findUserByIdDB = async (userId) => {
     }
 }
 
+export const findUserByEmailAndPasswordDB = async (email, password) => {
+
+    try {
+
+        const logIn = await db.query(
+            "SELECT * FROM User WHERE email = ? AND password = ?",
+            { type: db.QueryTypes.SELECT, replacements: [email, password] }
+        );
+
+        if (logIn.length == 0) {
+            return null;
+        }
+        console.log(logIn)
+        return logIn;
+
+    } catch (error) {
+
+        console.error(error.message);
+        throw error;
+
+    }
+
+}
 
 export const saveUserDB = async (user) => {
 

@@ -35,7 +35,9 @@ export const findProductByIdDB = async (productId) => {
         );
 
         if (product.length == 0) {
+
             return null;
+
         }
 
         return product;
@@ -46,6 +48,7 @@ export const findProductByIdDB = async (productId) => {
         throw error;
 
     }
+
 }
 
 
@@ -54,11 +57,14 @@ export const saveProductDB = async (product) => {
     try {
 
         const responseDB = await db.query(
+            
             "INSERT INTO Product (productId, productNumber, productName, productPrice, productPhoto) values(?,?,?,?,?)",
+
             {
                 type: db.QueryTypes.INSERT,
                 replacements: [null, product.productNumber, product.productName, product.productPrice, product.productPhoto],
             }
+
         );
         product.productId = responseDB[0];
         return product;
@@ -68,6 +74,7 @@ export const saveProductDB = async (product) => {
         console.error(error.message);
         throw error;
     }
+
 }
 
 

@@ -47,8 +47,10 @@ export const postProducts = async (request, response) => {
 
         if (error instanceof InvalidIdError) {
             response.status(400).json({ error: error.message });
+
         } else if (error instanceof InvalidObjectError) {
             response.status(400).json({ error: error.message });
+
         } else {
             response.status(500).json({ error: error.message });
         }
@@ -66,7 +68,7 @@ export const putProducts = async (request, response) => {
         const productDB = await findProductByIdDB(productId);
 
         if (productDB === null) {
-            response.status(404).json({ error: "Can't find product.productId = " + productId })
+            response.status(404).json({ error: "Can't find product.productId = " + productId });
         }
         // validar el producto que viene en el body del servicio
         // crear el objeto producto
