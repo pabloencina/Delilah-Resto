@@ -4,7 +4,7 @@ import { InvalidIdError } from "../error.js"
 import jsonwebtoken from "jsonwebtoken";
 //import expressRateLimit from "express-rate-limit";
 import { findUserByEmailAndPasswordDB } from "../repositories/userRepository.js"
-
+import { findAdministratorByUserIdDB } from "../repositories/administratorRepository.js";
 /*const limiter = expressRateLimit({
     windowMs: 60 * 1000,
     max: 5,
@@ -38,24 +38,29 @@ export const postLogin = async (request, response) => {
         if (userRecovered === null) {
             response.status(404).json({ error: "Wrong email or password" });
         }
-
+        console.log(userRecovered)
+        let administratorRecovered = await findAdministratorByUserIdDB(userRecovered.userId);
+//console.log(administratorRecovered)
+        if (administratorRecovered === null) {
+            userRecovered.admin = false
+        } else {
+            userRecovered.admin = true
+        }
+//console.log(userRecovered)
         const secretJWT = "ponerAlgoSuperComplicadoConNumuerosYCaracteres1234"
-/*
-        expressJwt({
-            secret: secretJWT,
-            algorithms: ["HS256"],
-        }).unless({
-            path: ["/logIn"]
-        })
-*/
+        /*
+                expressJwt({
+                    secret: secretJWT,
+                    algorithms: ["HS256"],
+                }).unless({
+                    path: ["/logIn"]
+                })
+        */
         const token = jsonwebtoken.sign(
-            {
-                email: email,
-                password: password
-            },
+            userRecovered,
             secretJWT,
-            { 
-                expiresIn: "10m" 
+            {
+                expiresIn: "10m"
             }
         );
 

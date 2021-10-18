@@ -42,7 +42,7 @@ export const postAdministrators = async (request, response) => {
 
         User.validate(userBody);
 
-        const user = new User(null, userBody.name, userBody.surname, userBody.email, userBody.phone, userBody.password);
+        const user = new User(null, userBody.name, userBody.surname, userBody.email, userBody.phone, userBody.password, true);
 
         let userSaved = await saveUserDB(user);
 

@@ -48,16 +48,16 @@ export const findUserByEmailAndPasswordDB = async (email, password) => {
 
     try {
 
-        const logIn = await db.query(
+        const users = await db.query(
             "SELECT * FROM User WHERE email = ? AND password = ?",
             { type: db.QueryTypes.SELECT, replacements: [email, password] }
         );
 
-        if (logIn.length == 0) {
+        if (users.length == 0) {
             return null;
         }
-        console.log(logIn)
-        return logIn;
+
+        return users[0];
 
     } catch (error) {
 
