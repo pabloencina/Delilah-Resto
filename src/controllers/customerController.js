@@ -6,6 +6,8 @@ import { InvalidIdError, InvalidObjectError } from "../error.js"
 
 import {
     findAllCustomersDB,
+    findCustomerByIdDB,
+    findCustomerByUserIdDB,
     saveCustomerDB,
     //updateProductDB,
     //deleteProductDB,
@@ -13,9 +15,11 @@ import {
 } from "../repositories/customerRepository.js"
 
 import { saveUserDB } from "../repositories/userRepository.js";
+import { validateId } from "./idValidator.js";
+
 
 export const getCustomers = async (request, response) => {
-    
+
     try {
 
         let customers = await findAllCustomersDB();
@@ -25,15 +29,40 @@ export const getCustomers = async (request, response) => {
 
     } catch (error) {
 
-        response.status(500).json({ error: "Intente despues..." })
+        response.status(500).json({ error: "Try later..." })
 
     }
 }
 
-export const postCustomers = async (request, response) => {
-    
+export const getCustomerById = async (request, response) => {
+    //Traer el cliente por Id.
     try {
-        
+        /*const customersDB = await db.query(
+            "SELECT cu.customerId, cu.address, us.userId, us.name, us.surname, us.email, us.phone FROM Customer cu  JOIN User us ON cu.userId = us.userId LIMIT 0, 1000",
+            { type: db.QueryTypes.SELECT }
+        )*/
+        const customerId = validateId(request.params.customerId)
+
+        const customerDB = await findCustomerByIdDB(customerId)
+
+        if (customerDB === null) {
+            response.status(404).json({ error: "Can't find customer.customerId = " + customerId });
+        }
+
+        response.status(200).json(customerDB);
+
+    } catch (error) {
+
+        response.status(500).json({ error: "Try later..." })
+
+    }
+
+}
+
+export const postCustomers = async (request, response) => {
+
+    try {
+
         const body = request.body;
         const userBody = request.body.user;
 
@@ -42,7 +71,7 @@ export const postCustomers = async (request, response) => {
         const user = new User(null, userBody.name, userBody.surname, userBody.email, userBody.phone, userBody.password, false);
 
         let userSaved = await saveUserDB(user);
-        
+
         Customer.validate(body);
 
         const customer = new Customer(null, body.address, userSaved);

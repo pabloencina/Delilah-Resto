@@ -1,5 +1,5 @@
 import db from '../db/index.js';
-
+import { validateAdminstrator } from "../security/validateRoles.js"
 
 export const findAllUsersDB = async () => {
 
@@ -42,6 +42,7 @@ export const findUserByIdDB = async (userId) => {
         throw error;
 
     }
+
 }
 
 export const findUserByEmailAndPasswordDB = async (email, password) => {

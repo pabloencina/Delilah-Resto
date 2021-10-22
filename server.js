@@ -58,7 +58,6 @@ server.use(
     })
 )
 
-
 server.use(productRoutes);
 server.use(customerRoutes);
 server.use(administratorRoutes);

@@ -1,7 +1,7 @@
 import db from '../db/index.js'
 
 export const findAllCustomersDB = async () => {
-    
+
     try {
 
         const customersDB = await db.query(
@@ -33,7 +33,7 @@ export const findCustomerByIdDB = async (customerId) => {
             return null;
         }
 
-        return customer ;
+        return customer;
 
     } catch (error) {
 
@@ -41,6 +41,32 @@ export const findCustomerByIdDB = async (customerId) => {
         throw error;
 
     }
+}
+
+export const findCustomerByUserIdDB = async (userId) => {
+
+
+    try {
+
+        const customer = await db.query(
+            "SELECT * FROM Customer WHERE userId = ?",
+            { type: db.QueryTypes.SELECT, replacements: [userId] }
+        );
+
+        if (customer.length == 0) {
+            return null;
+        }
+
+        return customer[0];
+
+    } catch (error) {
+
+        console.error(error.message);
+        throw error;
+
+    }
+
+
 }
 
 
