@@ -5,7 +5,7 @@ export const findAllCustomersDB = async () => {
     try {
 
         const customersDB = await db.query(
-            "SELECT cu.customerId, cu.address, us.userId, us.name, us.surname, us.email, us.phone FROM Customer cu  JOIN User us ON cu.userId = us.userId LIMIT 0, 1000",
+            "SELECT cu.customerId, cu.address, us.userId, us.name, us.surname, us.email, us.phone, us.password FROM Customer cu  JOIN User us ON cu.userId = us.userId LIMIT 0, 1000",
             { type: db.QueryTypes.SELECT }
         );
         console.log(customersDB);
@@ -45,7 +45,6 @@ export const findCustomerByIdDB = async (customerId) => {
 
 export const findCustomerByUserIdDB = async (userId) => {
 
-
     try {
 
         const customer = await db.query(
@@ -65,7 +64,6 @@ export const findCustomerByUserIdDB = async (userId) => {
         throw error;
 
     }
-
 
 }
 

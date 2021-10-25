@@ -15,6 +15,8 @@ import administratorRoutes from "./src/routes/administratorRoutes.js"
 
 import loginRoutes from "./src/routes/loginRoutes.js"
 
+import orderRoutes from "./src/routes/orderRoutes.js"
+
 // const otraLibreria = require("otraLibreria")
 
 //2- Crear la instancia de Express.
@@ -62,5 +64,6 @@ server.use(productRoutes);
 server.use(customerRoutes);
 server.use(administratorRoutes);
 server.use(loginRoutes);
+server.use(orderRoutes)
 server.listen(server.get("port"))
 console.log(`Se ha iniciado el servidor en el puerto ${PORT}`);

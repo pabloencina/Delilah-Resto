@@ -18,7 +18,6 @@ export const validateRequestedCustomer = async (request, response, next) => {
     console.log("paramCustomerId")
     console.log(request.params.customerId)
 
-
     if (request.user.customerId != request.params.customerId) {
         response.status(401).json({
             error: "User is not CUSTOMER",

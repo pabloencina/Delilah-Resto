@@ -7,11 +7,13 @@ import {
     //deleteCustomers
 } from "../controllers/administratorController.js";
 
+import { validateAdminstrator } from "../security/validateRoles.js";
+
 const router = Router();
 
-router.get("/administrators", getAdministrators);
+router.get("/administrators", validateAdminstrator, getAdministrators);
 
-router.post("/administrators", postAdministrators);
+router.post("/administrators", validateAdminstrator, postAdministrators);
 
 //router.put("/products/:productId", putProducts);//params
 

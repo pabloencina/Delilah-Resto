@@ -34,13 +34,16 @@ export const getCustomers = async (request, response) => {
     }
 }
 
+
 export const getCustomerById = async (request, response) => {
     //Traer el cliente por Id.
     try {
-        /*const customersDB = await db.query(
+        /*
+        const customersDB = await db.query(
             "SELECT cu.customerId, cu.address, us.userId, us.name, us.surname, us.email, us.phone FROM Customer cu  JOIN User us ON cu.userId = us.userId LIMIT 0, 1000",
             { type: db.QueryTypes.SELECT }
-        )*/
+        );
+*/
         const customerId = validateId(request.params.customerId)
 
         const customerDB = await findCustomerByIdDB(customerId)
@@ -56,6 +59,7 @@ export const getCustomerById = async (request, response) => {
         response.status(500).json({ error: "Try later..." })
 
     }
+
 
 }
 
