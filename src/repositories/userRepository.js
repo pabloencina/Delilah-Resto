@@ -1,5 +1,5 @@
 import db from '../db/index.js';
-import { validateAdminstrator } from "../security/validateRoles.js"
+//import { validateAdminstrator } from "../security/validateRoles.js"
 
 export const findAllUsersDB = async () => {
 

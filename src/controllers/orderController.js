@@ -1,20 +1,15 @@
-import { Order } from "../entities/order.js"
+//import { Order } from "../entities/order.js"
 
-import { User } from "../entities/user.js"
+//import { User } from "../entities/user.js"
 
-import { InvalidIdError, InvalidObjectError } from "../error.js"
+//import { InvalidIdError, InvalidObjectError } from "../error.js"
 
 import {
-    findAllOrdersDB
-    //findCustomerByIdDB,
-    //findCustomerByUserIdDB,
-    //saveCustomerDB,
-    //updateProductDB,
-    //deleteProductDB,
-    //findProductByIdDB
+    findAllOrdersDB,
+    getOrdersByCustomerDB,
+    // findOrderByIdDB
 } from "../repositories/orderRepository.js"
 
-import { saveUserDB } from "../repositories/userRepository.js";
 import { validateId } from "./idValidator.js";
 
 
@@ -34,6 +29,46 @@ export const getOrders = async (request, response) => {
     }
 }
 
-export const getOrderByCustomer = async (request, response) => {
+
+export const getOrdersByCustomer = async (request, response) => {
+
+    console.log("hola!")
+    try {
+
+        const customerId = validateId(request.params.customerId)
+        console.log(customerId)
+        let ordersByCustomer = await getOrdersByCustomerDB(customerId)
+
+        response.status(200).json(ordersByCustomer)
+        console.log(ordersByCustomer)
+
+    } catch (error) {
+
+        response.status(500).json({ error: "Try later..." })
+
+    }
+
+}
+
+
+export const getOrderById = async (request, response) => {
+
+    try {
+
+        const customerId = validateId(request.params.customerId)
+
+        const customerDB = await findCustomerByIdDB(customerId)
+
+        if (customerDB === null) {
+            response.status(404).json({ error: "Can't find customer.customerId = " + customerId });
+        }
+
+        response.status(200).json(customerDB);
+
+    } catch (error) {
+
+        response.status(500).json({ error: "Try later..." })
+
+    }
 
 }

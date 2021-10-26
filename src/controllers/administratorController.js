@@ -5,14 +5,8 @@ import { User } from "../entities/user.js"
 import { InvalidIdError, InvalidObjectError } from "../error.js";
 
 import {
-
     findAllAdministratorsDB,
-    //findAdministratorByIdDB,
     saveAdministratorDB,
-    //updateProductDB,
-    //deleteProductDB,
-    //findProductByIdDB
-
 } from "../repositories/administratorRepository.js";
 
 import { saveUserDB } from "../repositories/userRepository.js";

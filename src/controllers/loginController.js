@@ -18,7 +18,7 @@ export const postLogin = async (request, response) => {
         if (userRecovered === null) {
             response.status(404).json({ error: "Wrong email or password" });
         }
-        console.log(userRecovered)
+        
         let administratorRecovered = await findAdministratorByUserIdDB(userRecovered.userId);
 
         if (administratorRecovered === null) {
@@ -29,7 +29,7 @@ export const postLogin = async (request, response) => {
 
         // Agregar el coustemerId al objeto UserRecovered
         let customerRecovered = await findCustomerByUserIdDB(userRecovered.userId)
-        console.log(customerRecovered)
+        
         
         if (customerRecovered === null) {
             userRecovered.customerId = 0
@@ -46,8 +46,6 @@ export const postLogin = async (request, response) => {
                 expiresIn: "10m"
             }
         );
-
-        console.log(token);
 
         response.status(200).json(token);
 

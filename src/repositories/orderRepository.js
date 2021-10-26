@@ -20,3 +20,48 @@ export const findAllOrdersDB = async () => {
 
 }
 
+
+export const getOrdersByCustomerDB = async (customerId) => {
+
+    try {
+        
+        const orders = await db.query(
+            "SELECT * FROM `Order` WHERE CustomerId = ? ",
+            { type: db.QueryTypes.SELECT, replacements: [customerId] }
+        );
+
+        return orders;
+
+    } catch (error) {
+
+        console.error(error.message);
+        throw error;
+
+    }
+
+}
+
+
+export const findOrderByIdDB = async (orderId) => {
+
+    try {
+
+        const order = await db.query(
+            "SELECT * FROM Order WHERE orderId = ?",
+            { type: db.QueryTypes.SELECT, replacements: [orderId] }
+        )
+
+        if (order.length == 0) {
+            return null;
+        }
+
+        return order
+
+    }catch (error){
+
+        console.error(error.message);
+        throw error;
+
+    }
+}
+
