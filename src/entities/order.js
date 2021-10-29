@@ -1,7 +1,7 @@
 import { InvalidObjectError } from "../error.js";
 
 export class Order {
-    constructor(orderNumber, description, address, totalPrice, customerId, paymentMethod, orderState) {
+    constructor(orderNumber, description, address, totalPrice, customerId, paymentMethod, orderState, orderDetails) {
         this.orderNumber = orderNumber;
         this.description = description;
         this.address = address;
@@ -9,6 +9,7 @@ export class Order {
         this.customerId = customerId;
         this.paymentMethod = paymentMethod;
         this.orderState = orderState;
+        this.orderDetails = orderDetails
     }
 
     static validate(object) {
@@ -57,6 +58,10 @@ export class Order {
 
         if (object.customerId === null || object.customerId === undefined) {
             throw new InvalidObjectError("customerId can't be null or udefined");
+        }
+
+        if (object.orderDetails === null || object.orderDetails === undefined) {
+            throw new InvalidObjectError("orderDetails can't be null or udefined");
         }
 
     }

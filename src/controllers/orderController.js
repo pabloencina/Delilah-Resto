@@ -6,8 +6,9 @@
 
 import {
     findAllOrdersDB,
-    getOrdersByCustomerDB,
-    // findOrderByIdDB
+    findOrderByIdDB,
+    findOrderDetailsbyOrderIdsDB,
+    findOrdersByCustomerDB
 } from "../repositories/orderRepository.js"
 
 import { validateId } from "./idValidator.js";
@@ -32,15 +33,30 @@ export const getOrders = async (request, response) => {
 
 export const getOrdersByCustomer = async (request, response) => {
 
-    console.log("hola!")
+
     try {
 
         const customerId = validateId(request.params.customerId)
-        console.log(customerId)
-        let ordersByCustomer = await getOrdersByCustomerDB(customerId)
+
+        let ordersByCustomer = await findOrdersByCustomerDB(customerId)
+        console.log(ordersByCustomer)
+        //Construir un array con todos los orderId para buscar en la base de datos todos orderDtails que corrsponden. 
+        let orderIds = []
+        for (let i = 0; i < ordersByCustomer.length; i++) {
+
+            const element = ordersByCustomer[i]
+            orderIds.push(element.orderId)
+            
+        }
+        console.log(orderIds)
+         
+        //llamar la funcion de base de datos que devuelve las OrderDetails.
+
+        //let orderByOrderDetails = await findOrderDetailsbyOrderIdsDB(orderIds)
+
+        //Realcionar los Orderdetails con el Order que correspnde.
 
         response.status(200).json(ordersByCustomer)
-        console.log(ordersByCustomer)
 
     } catch (error) {
 
@@ -55,15 +71,15 @@ export const getOrderById = async (request, response) => {
 
     try {
 
-        const customerId = validateId(request.params.customerId)
+        const customerID = validateId(request.params.customerId)
 
-        const customerDB = await findCustomerByIdDB(customerId)
+        const orderByIdDB = await findOrderByIdDB(customerID)
 
-        if (customerDB === null) {
-            response.status(404).json({ error: "Can't find customer.customerId = " + customerId });
+        if (orderByIdDB === null) {
+            response.status(404).json({ error: "Can't find order.customerId = " + orderId });
         }
 
-        response.status(200).json(customerDB);
+        response.status(200).json(orderByIdDB);
 
     } catch (error) {
 

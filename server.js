@@ -11,11 +11,13 @@ import productRoutes from "./src/routes/productRoutes.js";
 
 import customerRoutes from "./src/routes/customerRoutes.js";
 
-import administratorRoutes from "./src/routes/administratorRoutes.js"
+import administratorRoutes from "./src/routes/administratorRoutes.js";
 
-import loginRoutes from "./src/routes/loginRoutes.js"
+import loginRoutes from "./src/routes/loginRoutes.js";
 
-import orderRoutes from "./src/routes/orderRoutes.js"
+import orderRoutes from "./src/routes/orderRoutes.js";
+
+//import orderDetailRoutes from "./src/routes/orderDetailRoutes.js"
 
 // const otraLibreria = require("otraLibreria")
 
@@ -64,6 +66,7 @@ server.use(productRoutes);
 server.use(customerRoutes);
 server.use(administratorRoutes);
 server.use(loginRoutes);
-server.use(orderRoutes)
+server.use(orderRoutes);
+//server.use(orderDetailRoutes)
 server.listen(server.get("port"))
 console.log(`Se ha iniciado el servidor en el puerto ${PORT}`);

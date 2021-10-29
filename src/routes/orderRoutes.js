@@ -8,7 +8,7 @@ import { validateAdminstrator, validateRequestedCustomer } from "../security/val
 
 const router = Router();
 
-router.get("/orders", getOrders);
+router.get("/orders", validateRequestedCustomer, getOrders);
 router.get("/orders/:orderId", validateRequestedCustomer);
 
 export default router;
