@@ -20,7 +20,7 @@ export const validateRequestedCustomer = async (request, response, next) => {
 
     if (request.user.customerId != request.params.customerId) {
         response.status(401).json({
-            error: "User is not CUSTOMER",
+            error: "User logged in is not Customer requested.",
         });
     } else {
         console.log("CustomerValidated")

@@ -33,7 +33,7 @@ export const findCustomerByIdDB = async (customerId) => {
             return null;
         }
 
-        return customer;
+        return customer[0];
 
     } catch (error) {
 

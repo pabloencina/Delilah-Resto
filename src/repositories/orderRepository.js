@@ -51,7 +51,10 @@ export const findOrderByIdDB = async (orderId) => {
             { type: db.QueryTypes.SELECT, replacements: [orderId] }
         )
 
-        return order
+        if (order.length == 0) {
+            return null;
+        }
+        return order[0];
 
     } catch (error) {
 
@@ -65,12 +68,12 @@ export const findOrderDetailsbyOrderIdsDB = async (orderIds) => {
 
     try {
 
-        const orderDetails = await db.query(
-            "SELECT * FROM `Order`  WHERE CustomerId = ?",
+        const orderDetail = await db.query(
+            "SELECT * FROM OrderDetail ord WHERE ord.orderId IN (?)",
             { type: db.QueryTypes.SELECT, replacements: [orderIds] }
         )
-        console.log(orderDetails)
-        return orderDetails
+
+        return orderDetail
 
     } catch (error) {
 

@@ -4,6 +4,7 @@
 
 //import { InvalidIdError, InvalidObjectError } from "../error.js"
 
+import { OrderDetails } from "../entities/orderDetails.js";
 import {
     findAllOrdersDB,
     findOrderByIdDB,
@@ -39,22 +40,32 @@ export const getOrdersByCustomer = async (request, response) => {
         const customerId = validateId(request.params.customerId)
 
         let ordersByCustomer = await findOrdersByCustomerDB(customerId)
-        console.log(ordersByCustomer)
         //Construir un array con todos los orderId para buscar en la base de datos todos orderDtails que corrsponden. 
         let orderIds = []
+
         for (let i = 0; i < ordersByCustomer.length; i++) {
 
-            const element = ordersByCustomer[i]
-            orderIds.push(element.orderId)
-            
+            orderIds.push(ordersByCustomer[i].orderId)
+
         }
-        console.log(orderIds)
-         
         //llamar la funcion de base de datos que devuelve las OrderDetails.
-
-        //let orderByOrderDetails = await findOrderDetailsbyOrderIdsDB(orderIds)
-
+        let orderDetails = await findOrderDetailsbyOrderIdsDB(orderIds)
         //Realcionar los Orderdetails con el Order que correspnde.
+        for (let j = 0; j < ordersByCustomer.length; j++) {
+
+            let orderDetail = [];
+
+            for (let i = 0; i < orderDetails.length; i++) {
+
+                if (orderDetails[i].orderId === ordersByCustomer[j].orderId) {
+                    orderDetail.push(orderDetails[i]);
+                }
+
+            }
+
+            ordersByCustomer[j].orderDetails = orderDetail;
+
+        }
 
         response.status(200).json(ordersByCustomer)
 
@@ -71,13 +82,15 @@ export const getOrderById = async (request, response) => {
 
     try {
 
-        const customerID = validateId(request.params.customerId)
+        const orderId = validateId(request.params.orderId)
 
-        const orderByIdDB = await findOrderByIdDB(customerID)
+        const orderByIdDB = await findOrderByIdDB(orderId)
 
         if (orderByIdDB === null) {
             response.status(404).json({ error: "Can't find order.customerId = " + orderId });
         }
+
+        //ffffffffffffffffffffffffffffffffffffffffffffffffffff
 
         response.status(200).json(orderByIdDB);
 
