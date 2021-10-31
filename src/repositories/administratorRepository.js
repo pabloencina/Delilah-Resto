@@ -32,8 +32,8 @@ export const findAdministratorByIdDB = async (administratorId) => {
         if (administrator.length == 0) {
             return null;
         }
-
-        return administrator ;
+        console.log(administrator[0])
+        return administrator[0] ;
 
     } catch (error) {
 
@@ -41,6 +41,7 @@ export const findAdministratorByIdDB = async (administratorId) => {
         throw error;
 
     }
+
 }
 
 export const findAdministratorByUserIdDB = async (userId) => {
@@ -78,7 +79,9 @@ export const saveAdministratorDB = async (administrator) => {
                 replacements: [null, administrator.identificationNumber, administrator.user.userId],
             }
         );
+
         administrator.administratorId = responseDB[0];
+        
         return administrator;
 
     } catch (error) {

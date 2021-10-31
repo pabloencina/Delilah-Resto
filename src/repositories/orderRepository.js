@@ -54,6 +54,7 @@ export const findOrderByIdDB = async (orderId) => {
         if (order.length == 0) {
             return null;
         }
+
         return order[0];
 
     } catch (error) {
@@ -62,6 +63,7 @@ export const findOrderByIdDB = async (orderId) => {
         throw error;
 
     }
+    
 }
 
 export const findOrderDetailsbyOrderIdsDB = async (orderIds) => {

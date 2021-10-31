@@ -1,3 +1,4 @@
+
 import { Administrator } from "../entities/administrator.js"
 
 import { User } from "../entities/user.js"
@@ -7,9 +8,13 @@ import { InvalidIdError, InvalidObjectError } from "../error.js";
 import {
     findAllAdministratorsDB,
     saveAdministratorDB,
+    findAdministratorByIdDB
 } from "../repositories/administratorRepository.js";
 
+import { validateId } from "./idValidator.js";
+
 import { saveUserDB } from "../repositories/userRepository.js";
+
 
 export const getAdministrators = async (request, response) => {
 
@@ -22,10 +27,34 @@ export const getAdministrators = async (request, response) => {
 
     } catch (error) {
 
-        response.status(500).json({ error: "Intente despues..." })
+        response.status(500).json({ error: "Try later..." })
 
     }
 }
+
+
+export const getAdministratorById = async (request, response) => {
+
+    try {
+
+        const administratorID = validateId(request.params.administratorId)
+        //console.log(adminstratorId)
+        const administratorByIdDB = await findAdministratorByIdDB(administratorID)
+
+        if (administratorByIdDB === null) {
+            response.status(404).json({ error: "Can't find administrator.administratorId = " + administratorID });
+        }
+
+        response.status(200).json(administratorByIdDB);
+
+    } catch (error) {
+
+        response.status(500).json({ error: "Try later..." })
+
+    }
+
+}
+
 
 export const postAdministrators = async (request, response) => {
 

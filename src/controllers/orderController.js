@@ -91,6 +91,23 @@ export const getOrderById = async (request, response) => {
         }
 
         //ffffffffffffffffffffffffffffffffffffffffffffffffffff
+        let orderIds = []
+
+        let orderDetail = [];
+
+        let orderDetails = await findOrderDetailsbyOrderIdsDB(orderIds)
+
+        for (let i = 0; i < orderDetails.length; i++) {
+
+            if (orderDetails[i].orderId === orderByIdDB.orderId) {
+                console.log(orderDetails[i].orderId)
+                orderDetail.push(orderDetails[i]);
+
+            }
+
+            orderByIdDB.OrderDetails = orderDetail
+
+        }
 
         response.status(200).json(orderByIdDB);
 
