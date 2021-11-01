@@ -1,6 +1,7 @@
 import { InvalidObjectError } from "../error.js";
 
 export class Order {
+    
     constructor(orderNumber, description, address, totalPrice, customerId, paymentMethod, orderState, orderDetails) {
         this.orderNumber = orderNumber;
         this.description = description;
@@ -41,14 +42,14 @@ export class Order {
             (!(typeof object.totalPrice === 'number')) {
             throw new InvalidObjectError("totalPrice must be a number");
         }
-
+/**/
         if (object.paymentMethod === null || object.paymentMethod === undefined) {
             throw new InvalidObjectError("paymentMethod can't be null or udefined");
         } else if
             (!(typeof object.paymentMethod === 'string')) {
             throw new InvalidObjectError("paymentMethod must be a string");
         }
-
+/**/
         if (object.orderState === null || object.orderState === undefined) {
             throw new InvalidObjectError("orderState can't be null or udefined");
         } else if

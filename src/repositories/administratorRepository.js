@@ -32,7 +32,7 @@ export const findAdministratorByIdDB = async (administratorId) => {
         if (administrator.length == 0) {
             return null;
         }
-        console.log(administrator[0])
+
         return administrator[0] ;
 
     } catch (error) {

@@ -30,6 +30,7 @@ export const getAdministrators = async (request, response) => {
         response.status(500).json({ error: "Try later..." })
 
     }
+    
 }
 
 

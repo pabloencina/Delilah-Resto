@@ -4,7 +4,8 @@
 
 //import { InvalidIdError, InvalidObjectError } from "../error.js"
 
-import { OrderDetails } from "../entities/orderDetails.js";
+//import { OrderDetails } from "../entities/orderDetails.js";
+
 import {
     findAllOrdersDB,
     findOrderByIdDB,
@@ -87,27 +88,26 @@ export const getOrderById = async (request, response) => {
         const orderByIdDB = await findOrderByIdDB(orderId)
 
         if (orderByIdDB === null) {
+
             response.status(404).json({ error: "Can't find order.customerId = " + orderId });
+            
         }
 
-        //ffffffffffffffffffffffffffffffffffffffffffffffffffff
-        let orderIds = []
+        let orderDetails = await findOrderDetailsbyOrderIdsDB(orderId)
 
         let orderDetail = [];
-
-        let orderDetails = await findOrderDetailsbyOrderIdsDB(orderIds)
 
         for (let i = 0; i < orderDetails.length; i++) {
 
             if (orderDetails[i].orderId === orderByIdDB.orderId) {
-                console.log(orderDetails[i].orderId)
+
                 orderDetail.push(orderDetails[i]);
 
             }
-
-            orderByIdDB.OrderDetails = orderDetail
-
+            
         }
+
+        orderByIdDB.orderDetails = orderDetail;
 
         response.status(200).json(orderByIdDB);
 
