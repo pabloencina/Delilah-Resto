@@ -1,11 +1,12 @@
+import { validateId } from "../controllers/idValidator.js";
 import { InvalidObjectError } from "../error.js";
 
 export class OrderDetails {
-    constructor(orderDetailId, productPrice, productQuantify,product) {
+    constructor(orderDetailId, productPrice, productQuantify, productId) {
         this.orderDetailId = orderDetailId;
         this.productPrice = productPrice;
-        this. productQuantify =  productQuantify;
-        this.product = product
+        this.productQuantify =  productQuantify;
+        this.productId = productId
     }
 
     static validate(object) {
@@ -24,9 +25,7 @@ export class OrderDetails {
             throw new InvalidObjectError("productQuantify must be a number");
         }
 
-        if (object.product === null || object.product === undefined) {
-            throw new InvalidObjectError("product can't be null or udefined");
-        }
+        validateId(object.productId);
 
     }
 }

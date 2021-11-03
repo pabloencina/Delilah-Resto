@@ -3,7 +3,6 @@ import compression from "compression";
 import express from "express";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
-
 import expressRateLimit from "express-rate-limit";
 import expressJwt from "express-jwt";
 
@@ -16,10 +15,6 @@ import administratorRoutes from "./src/routes/administratorRoutes.js";
 import loginRoutes from "./src/routes/loginRoutes.js";
 
 import orderRoutes from "./src/routes/orderRoutes.js";
-
-//import orderDetailRoutes from "./src/routes/orderDetailRoutes.js"
-
-// const otraLibreria = require("otraLibreria")
 
 //2- Crear la instancia de Express.
 const server = express();

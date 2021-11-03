@@ -3,13 +3,13 @@ import {
     getCustomers,
     postCustomers,
     getCustomerById
-    //putCustomers,
-    //deleteCustomers
 } from "../controllers/customerController.js";
 
 import{
     getOrdersByCustomer,
-    getOrderById
+    getOrderById,
+    postOrderByCustomerId,
+    putOrderByCustomerId
 } from "../controllers/orderController.js";
 
 import { validateAdminstrator, validateRequestedCustomer } from "../security/validateRoles.js";
@@ -21,5 +21,7 @@ router.get("/customers/:customerId", validateRequestedCustomer, getCustomerById)
 router.post("/customers",validateRequestedCustomer , postCustomers);
 router.get("/customers/:customerId/orders", validateRequestedCustomer,getOrdersByCustomer)
 router.get("/customers/:customerId/orders/:orderId", validateRequestedCustomer, getOrderById)
+router.post("/customers/:customerId/orders", validateRequestedCustomer, postOrderByCustomerId)
+router.put("/customers/:customerId/orders/:orderId", validateRequestedCustomer, putOrderByCustomerId)
 
 export default router;

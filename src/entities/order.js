@@ -42,12 +42,17 @@ export class Order {
             (!(typeof object.totalPrice === 'number')) {
             throw new InvalidObjectError("totalPrice must be a number");
         }
-/**/
+
         if (object.paymentMethod === null || object.paymentMethod === undefined) {
             throw new InvalidObjectError("paymentMethod can't be null or udefined");
         } else if
             (!(typeof object.paymentMethod === 'string')) {
             throw new InvalidObjectError("paymentMethod must be a string");
+        }else if(
+            object.paymentMethod != 'CARD' &&
+            object.paymentMethod != 'CASH'
+        ){
+            throw new InvalidObjectError("invalid paymentMethod. Must be in ('CARD', 'CASH')");
         }
 /**/
         if (object.orderState === null || object.orderState === undefined) {

@@ -1,4 +1,6 @@
+import { response } from 'express';
 import db from '../db/index.js'
+import { OrderDetails } from '../entities/orderDetails.js';
 
 export const findAllOrdersDB = async () => {
 
@@ -63,7 +65,7 @@ export const findOrderByIdDB = async (orderId) => {
         throw error;
 
     }
-    
+
 }
 
 export const findOrderDetailsbyOrderIdsDB = async (orderIds) => {
@@ -84,5 +86,75 @@ export const findOrderDetailsbyOrderIdsDB = async (orderIds) => {
 
     }
 
+}
+//fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+
+export const saveOrder = async (order) => {
+
+    try {
+
+        const responseDB = await db.query(
+
+            "INSERT INTO Order (orderNumber, description, address, totalPrice, customerId, paymentMethod, orderState) values(?,?,?,?,?,?,?)",
+
+            {
+                type: db.QueryTypes.INSERT,
+                replacements: [order.orderNumber, order.description, order.address, order.totalPrice, order.customerId, order.paymentMethod, order.orderState],
+            }
+
+        );
+        order.orderId = responseDB[0];
+
+        console.log(order.orderDetails);
+
+        for (let i = 0; i < order.orderDetails.length; i++) {
+
+            const responseDB = await db.query(
+
+                "INSERT INTO OrderDetail (productPrice, productQuantity, productId, orderId) values(?,?,?,?)",
+
+                {
+                    type: db.QueryTypes.INSERT,
+                    replacements: [order.orderDetails[i].productPrice, order.orderDetails[i].productQuantity, order.orderDetails[i].productId, order.orderId],
+                }
+
+            );
+
+            order.orderDetails[i].orderDetailId = responseDB[0];
+            console.log(order.orderDetails[i].orderDetailId = responseDB[0])
+
+        }
+
+        return order;
+
+    } catch (error) {
+
+        console.error(error.message);
+
+        throw error;
+    }
+
+}
+//wretwertwertwertwertwertwertwertwertwertwetrwertwertwertwertwertwertwert
+
+export const updateOrderByCustomerIdDB = async (productId, product) => {
+
+    try {
+
+        const result = await db.query(
+            "UPDATE Product SET productNumber = ?, productName = ?, productPrice = ?, productPhoto = ? WHERE productId = ?",
+            {
+                type: db.QueryTypes.UPDATE,
+                replacements: [product.productNumber, product.productName, product.productPrice, product.productPhoto, productId],
+            }
+        );
+        console.log(result)
+        return result;
+
+    } catch (error) {
+
+        console.error(error.message);
+        throw error;
+    }
 }
 

@@ -7,12 +7,8 @@ import { InvalidIdError, InvalidObjectError } from "../error.js"
 import {
     findAllCustomersDB,
     findCustomerByIdDB,
-    findCustomerByUserIdDB,
+    //findCustomerByUserIdDB,
     saveCustomerDB,
-    
-    //updateProductDB,
-    //deleteProductDB,
-    //findProductByIdDB
 } from "../repositories/customerRepository.js"
 
 import { saveUserDB } from "../repositories/userRepository.js";
