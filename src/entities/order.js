@@ -49,17 +49,34 @@ export class Order {
             (!(typeof object.paymentMethod === 'string')) {
             throw new InvalidObjectError("paymentMethod must be a string");
         }else if(
-            object.paymentMethod != 'CARD' &&
-            object.paymentMethod != 'CASH'
+
+            object.paymentMethod != "CARD" &&
+            object.paymentMethod != "CASH"
+
         ){
+
             throw new InvalidObjectError("invalid paymentMethod. Must be in ('CARD', 'CASH')");
+
         }
-/**/
+
         if (object.orderState === null || object.orderState === undefined) {
             throw new InvalidObjectError("orderState can't be null or udefined");
         } else if
             (!(typeof object.orderState === 'string')) {
             throw new InvalidObjectError("orderState must be a string");
+        }else if (
+
+            object.orderState != "NEW" &&
+            object.orderState != "CONFIRMED" &&
+            object.orderState != "PREPARED" &&
+            object.orderState != "SENT" &&
+            object.orderState != "DELIVERED" &&
+            object.orderState != "CANCELLED" 
+            
+            ){
+
+                throw new InvalidObjectError("Invalid orderstate. Must be in ('NEW', 'CONFIRMED', 'PREPARED', 'SENT', 'DELIVERED', 'CANCELLED')");
+
         }
 
         if (object.customerId === null || object.customerId === undefined) {
