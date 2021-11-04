@@ -12,15 +12,31 @@ export class Administrator {
 
     static validate(object) {
 
-        if (object.identificationNumber === null || object.identificationNumber === undefined) {
+        if (
+
+            object.identificationNumber === null || 
+            object.identificationNumber === undefined
+
+            ) {
+
             throw new InvalidObjectError("identificationNumber can't be null or udefined");
+
         } else if
             (!(typeof object.identificationNumber === 'string')) {
+
             throw new InvalidObjectError("identificationNumber must be a string");
+
         }
 
-        if (object.user === null || object.user === undefined) {
+        if (
+            
+            object.user === null || 
+            object.user === undefined
+            
+            ) {
+
             throw new InvalidObjectError("user can't be null or udefined");
+
         }
 
     }

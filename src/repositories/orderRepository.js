@@ -1,6 +1,6 @@
 import { response } from 'express';
 import db from '../db/index.js'
-import { OrderDetails } from '../entities/orderDetails.js';
+import { OrderDetail } from '../entities/orderDetail.js';
 
 export const findAllOrdersDB = async () => {
 
@@ -95,11 +95,11 @@ export const saveOrder = async (order) => {
 
         const responseDB = await db.query(
 
-            "INSERT INTO Order (orderNumber, description, address, totalPrice, customerId, paymentMethod, orderState) values(?,?,?,?,?,?,?)",
+            "INSERT INTO `Order` (orderNumber, description, address, totalPrice, customerId, paymentMethod, orderState, orderCreateDateTime) values(?,?,?,?,?,?,?,?)",
 
             {
                 type: db.QueryTypes.INSERT,
-                replacements: [order.orderNumber, order.description, order.address, order.totalPrice, order.customerId, order.paymentMethod, order.orderState],
+                replacements: [order.orderNumber, order.description, order.address, order.totalPrice, order.customerId, order.paymentMethod, order.orderState, order.orderCreateDateTime],
             }
 
         );

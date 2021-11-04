@@ -43,7 +43,7 @@ export const postLogin = async (request, response) => {
             userRecovered,
             secretJWT,
             {
-                expiresIn: "10m"
+                expiresIn: "120m"
             }
         );
 

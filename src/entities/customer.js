@@ -9,15 +9,31 @@ export class Customer {
 
     static validate(object) {
 
-        if (object.address === null || object.address === undefined) {
+        if (
+            
+            object.address === null || 
+            object.address === undefined
+            
+            ) {
+
             throw new InvalidObjectError("address can't be null or udefined");
+
         } else if
             (!(typeof object.address === 'string')) {
+
             throw new InvalidObjectError("address must be a string");
+
         }
 
-        if (object.user === null || object.user === undefined) {
+        if (
+            
+            object.user === null || 
+            object.user === undefined
+            
+            ) {
+
             throw new InvalidObjectError("user can't be null or udefined");
+            
         }
 
     }

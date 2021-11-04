@@ -1,5 +1,7 @@
 import { Order } from "../entities/order.js";
 
+import { OrderDetail } from "../entities/orderDetail.js"
+
 import {
     findAllOrdersDB,
     findOrderByIdDB,
@@ -119,32 +121,26 @@ export const getOrderById = async (request, response) => {
 
 //ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
 export const postOrderByCustomerId = async (request, response) => {
-    // saveProductsDB
-    // cuando reciba el request
-    // debe crear un Product y guardarlo
+
     try {
-        //let products = await saveProductDB(request, response);
+
         const body = request.body;
 
         Order.validate(body);
+        // Hacer una función del product repository que traiga todos los product ID (array)
 
-        /*
-        for(body.orderDetails){
-            OrderDetail.validate()
-        }
-        */
+
         for (let i = 0; i < body.orderDetails.length; i++) {
 
-            OrderDetail.validate(orderDetails[i]);
-
+            OrderDetail.validate(body.orderDetails[i]);
+            // verificar que el productId del orderDetail[i] esté dentro de ese array 
+            // so da false response.status(409).("message") con el mensaje correspodiente
         }
-
-        const order = new Order(body.orderNumber, body.description, body.address, body.totalPrice, request.params.customerId, body.paymentMethod, 'NEW', body.orderDetails);
+        const currentDateTime = new Date();
+        console.log(currentDateTime)
+        const order = new Order(body.orderNumber, body.description, body.address, body.totalPrice, request.params.customerId, body.paymentMethod, 'NEW', body.orderDetails, currentDateTime)
 
         let orderSaved = await saveOrder(order);
-
-
-        //guardar los oderdetail
 
         response.status(200).json(orderSaved);
 
