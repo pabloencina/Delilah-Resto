@@ -1,6 +1,4 @@
-import { response } from 'express';
 import db from '../db/index.js'
-import { OrderDetail } from '../entities/orderDetail.js';
 
 export const findAllOrdersDB = async () => {
 
@@ -137,15 +135,15 @@ export const saveOrder = async (order) => {
 }
 //wretwertwertwertwertwertwertwertwertwertwetrwertwertwertwertwertwertwert
 
-export const updateOrderByCustomerIdDB = async (productId, product) => {
+export const updateOrderByCustomerIdDB = async (customerId,order) => {
 
     try {
 
         const result = await db.query(
-            "UPDATE Product SET productNumber = ?, productName = ?, productPrice = ?, productPhoto = ? WHERE productId = ?",
+            "UPDATE `Order` SET orderNumber = ?, description = ?, address = ?, totalPrice = ?, paymentMethod = ?, orderState = ?,  WHERE customerId = ?",
             {
                 type: db.QueryTypes.UPDATE,
-                replacements: [product.productNumber, product.productName, product.productPrice, product.productPhoto, productId],
+                replacements: [order.orderNumber, order.description, order.address, order.totalPrice, order.paymentMethod, order.orderState, customerId],
             }
         );
         console.log(result)
@@ -158,3 +156,23 @@ export const updateOrderByCustomerIdDB = async (productId, product) => {
     }
 }
 
+export const updateOrderByIdDB = async (orderId) => {
+
+    try {
+
+        const result = await db.query(
+            "UPDATE `Order` SET orderNumber = ?, description = ?, address = ?, totalPrice = ?, paymentMethod = ?, orderState = ?,  WHERE orderId = ?",
+            {
+                type: db.QueryTypes.UPDATE,
+                replacements: [order.orderNumber, order.description, order.address, order.totalPrice, order.paymentMethod, order.orderState, orderId],
+            }
+        );
+        console.log(result)
+        return result;
+
+    } catch (error) {
+
+        console.error(error.message);
+        throw error;
+    }
+}

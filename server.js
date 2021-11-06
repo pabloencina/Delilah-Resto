@@ -62,6 +62,5 @@ server.use(customerRoutes);
 server.use(administratorRoutes);
 server.use(loginRoutes);
 server.use(orderRoutes);
-//server.use(orderDetailRoutes)
 server.listen(server.get("port"))
 console.log(`Se ha iniciado el servidor en el puerto ${PORT}`);

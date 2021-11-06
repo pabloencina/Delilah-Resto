@@ -20,10 +20,6 @@
   ],
   "tags": [
     {
-      "name": "users",
-      "description": "User Magnament"
-    },
-    {
       "name": "customers",
       "description": "customer Magnament"
     },
@@ -41,174 +37,9 @@
     }
   ],
   "paths": {
-    "/users": {
-      "get": {
-        "summary": "List of all users",
-        "tags": [
-          "users"
-        ],
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "How many items to return at one time (max 100)",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "a paged array of users",
-            "headers": {
-              "x-next": {
-                "type": "string",
-                "description": "A link to the next page of responses"
-              }
-            },
-            "schema": {
-              "$ref": "#/definitions/users"
-            }
-          },
-          "default": {
-            "description": "unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      },
-      "post": {
-        "summary": "Create a user",
-        "tags": [
-          "users"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "User type object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/user"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Null response",
-            "schema": {
-              "$ref": "#/definitions/user"
-            }
-          },
-          "default": {
-            "description": "unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
-    "/users/{userId}": {
-      "get": {
-        "summary": "Get the information of the user",
-        "tags": [
-          "users"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "The id of the user to get the information",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Information of the user",
-            "schema": {
-              "$ref": "#/definitions/user"
-            }
-          },
-          "default": {
-            "description": "unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-
-      },
-      "put": {
-        "summary": "Modify user",
-        "tags": [
-          "users"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "the id of the user to be modified",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "User type object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/user"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Null response"
-          },
-          "default": {
-            "description": "unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete a user",
-        "tags": [
-          "users"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "the id of the user to be deleted",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "user was successfully removed"
-          },
-          "default": {
-            "description": "unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
     "/customers": {
       "get": {
-        "summary": "List of all customers",
+        "summary": "Check user list",
         "tags": [
           "customers"
         ],
@@ -244,7 +75,7 @@
         }
       },
       "post": {
-        "summary": "Create a customer",
+        "summary": "Check in",
         "tags": [
           "customers"
         ],
@@ -273,8 +104,8 @@
       }
     },
     "/customers/{customerId}": {
-      "put": {
-        "summary": "Modify a customer",
+      "get": {
+        "summary": "See my data",
         "tags": [
           "customers"
         ],
@@ -308,9 +139,11 @@
             }
           }
         }
-      },
-      "delete": {
-        "summary": "Delete a customer",
+      }
+    },
+    "/customers/{customerId}/orders": {
+      "get": {
+        "summary": "Check my orders",
         "tags": [
           "customers"
         ],
@@ -318,15 +151,76 @@
           {
             "name": "customerId",
             "in": "path",
-            "description": "the id of the customer to be removed",
+            "description": "the id of the customer to get the orders",
             "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "How many items to return at one time (max 100)",
+            "required": false,
             "type": "integer",
             "format": "int32"
           }
         ],
         "responses": {
           "200": {
-            "description": "the customer was successfully removed"
+            "description": "a paged array of orders",
+            "headers": {
+              "x-next": {
+                "type": "string",
+                "description": "A link to the next page of responses"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/orders"
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create an order",
+        "tags": [
+          "customers"
+        ],
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "description": "the id of the customer to get the orders",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "How many items to return at one time (max 100)",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "a paged array of orders",
+            "headers": {
+              "x-next": {
+                "type": "string",
+                "description": "A link to the next page of responses"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/orders"
+            }
           },
           "default": {
             "description": "unexpected error",
@@ -337,9 +231,9 @@
         }
       }
     },
-    "/customers/{customerId}/orders": {
+    "/customers/{customerId}/orders/{orderId}": {
       "get": {
-        "summary": "List all orders of a customer",
+        "summary": "View order status",
         "tags": [
           "customers"
         ],
@@ -348,6 +242,66 @@
             "name": "customerId",
             "in": "path",
             "description": "the id of the customer to get the orders",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "the id of the order to be requested",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "How many items to return at one time (max 100)",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "a paged array of orders",
+            "headers": {
+              "x-next": {
+                "type": "string",
+                "description": "A link to the next page of responses"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/orders"
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Cancel the order",
+        "tags": [
+          "customers"
+        ],
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "description": "the id of the customer to get the orders",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "the id of the order to be cancelled",
             "required": true,
             "type": "integer",
             "format": "int32"
@@ -450,8 +404,8 @@
       }
     },
     "/administrators/{administratorId}": {
-      "put": {
-        "summary": "Modify administrator",
+      "get": {
+        "summary": "See my data",
         "tags": [
           "administrators"
         ],
@@ -485,38 +439,11 @@
             }
           }
         }
-      },
-      "delete": {
-        "summary": "Delete a administrators",
-        "tags": [
-          "administrators"
-        ],
-        "parameters": [
-          {
-            "name": "administratorId",
-            "in": "path",
-            "description": "the id of the administrator to be deleted",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "administrator was successfully removed"
-          },
-          "default": {
-            "description": "unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
       }
     },
     "/orders": {
       "get": {
-        "summary": "List of all orders",
+        "summary": "See order list",
         "tags": [
           "orders"
         ],
@@ -550,38 +477,10 @@
             }
           }
         }
-      },
-      "post": {
-        "summary": "Create a order",
-        "tags": [
-          "orders"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Order type object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/order"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Null response"
-          },
-          "default": {
-            "description": "unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
       }
     },
     "/orders/{orderId}": {
-      "get": {
+      "put": {
         "summary": "get an order",
         "tags": [
           "orders"
@@ -602,69 +501,6 @@
             "schema": {
               "$ref": "#/definitions/order"
             }
-          },
-          "default": {
-            "description": "unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      },
-      "put": {
-        "summary": "Modify order",
-        "tags": [
-          "orders"
-        ],
-        "parameters": [
-          {
-            "name": "orderId",
-            "in": "path",
-            "description": "the id of the order to be modified",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "order type object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/order"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Null response"
-          },
-          "default": {
-            "description": "unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete a order",
-        "tags": [
-          "orders"
-        ],
-        "parameters": [
-          {
-            "name": "orderId",
-            "in": "path",
-            "description": "the id of the order to be deleted",
-            "required": true,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "order was successfully removed"
           },
           "default": {
             "description": "unexpected error",
@@ -826,7 +662,10 @@
           "type": "string"
         },
         "password": {
-          "type": "number"
+          "type": "string"
+        },
+        "admin": {
+          "type": "boolean"
         }
       }
     },
@@ -862,6 +701,10 @@
         "user": {
           "type": "object",
           "$ref": "#/definitions/user"
+        },
+        "order": {
+          "type": "object",
+          "$ref": "#/definitions/order"
         }
       }
     },
@@ -876,9 +719,11 @@
         "administratorId": {
           "type": "number"
         },
-        "user": {
-          "type": "object",
-          "$ref": "#/definitions/user"
+        "userId": {
+          "type": "number"
+        },
+        "identificationNumber": {
+          "type": "string"
         }
       }
     },
@@ -893,7 +738,7 @@
         "orderId": {
           "type": "number"
         },
-        "numberOrder": {
+        "orderNumber": {
           "type": "number"
         },
         "description": {
@@ -905,19 +750,13 @@
         "totalPrice": {
           "type": "number"
         },
-        "paymentMethod": {
-          "type": "string"
-        },
-        "orderState": {
-          "type": "string"
-        },
-        "orderDetails": {
+        "orderDetail": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/order-detail"
           }
         },
-        "orderCreatedDateTime": {
+        "orderCreateDateTime": {
           "type": "string"
         },
         "orderConfirmedDateTime": {
@@ -933,6 +772,15 @@
           "type": "string"
         },
         "orderCancelledDateTime": {
+          "type": "string"
+        },
+        "customerId": {
+          "type": "number"
+        },
+        "paymentMethod": {
+          "type": "string"
+        },
+        "orderState": {
           "type": "string"
         }
       }
@@ -954,9 +802,8 @@
         "productQuantify": {
           "type": "number"
         },
-        "product": {
-          "type": "object",
-          "$ref": "#/definitions/product"
+        "productId": {
+          "type": "number"
         }
       }
     },

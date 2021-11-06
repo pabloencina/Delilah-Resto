@@ -8,8 +8,11 @@ import {
     findOrderDetailsbyOrderIdsDB,
     findOrdersByCustomerDB,
     saveOrder,
-    //updateOrderByCustomerIdDB
+    updateOrderByCustomerIdDB,
+    updateOrderByIdDB
 } from "../repositories/orderRepository.js"
+
+//import { updateOrderByCustomerIdDB } from "../repositories/orderRepository.js"
 
 import { InvalidIdError, InvalidObjectError } from "../error.js";
 
@@ -128,7 +131,7 @@ export const postOrderByCustomerId = async (request, response) => {
 
         Order.validate(body);
         // Hacer una función del product repository que traiga todos los product ID (array)
-
+        
 
         for (let i = 0; i < body.orderDetails.length; i++) {
 
@@ -137,7 +140,7 @@ export const postOrderByCustomerId = async (request, response) => {
             // so da false response.status(409).("message") con el mensaje correspodiente
         }
         const currentDateTime = new Date();
-        console.log(currentDateTime)
+
         const order = new Order(body.orderNumber, body.description, body.address, body.totalPrice, request.params.customerId, body.paymentMethod, 'NEW', body.orderDetails, currentDateTime)
 
         let orderSaved = await saveOrder(order);
@@ -166,10 +169,10 @@ export const putOrderByCustomerId = async (request, response) => {
 
         const customerId = validateId(request.params.customerId);
 
-        const customerDB = await findProductByIdDB(customerId);
+        const customerDB = await updateOrderByCustomerIdDB(customerId);
 
         if (customerDB === null) {
-            response.status(404).json({ error: "Can't find product.productId = " + customerId });
+            response.status(404).json({ error: "Can't find customer.customerId = " + customerId });
         }
         // validar el producto que viene en el body del servicio
         // crear el objeto producto
@@ -184,6 +187,44 @@ export const putOrderByCustomerId = async (request, response) => {
         await updateProductDB(customerId, order);
 
         response.status(200).json({ message: "Order(" + customerId + ") updated successfully." });
+
+    } catch (error) {
+
+        if (error instanceof InvalidIdError) {
+            response.status(400).json({ error: error.message });
+        } else if (error instanceof InvalidObjectError) {
+            response.status(400).json({ error: error.message });
+        } else {
+            response.status(500).json({ error: error.message });
+        }
+    }
+}
+
+
+export const putOrderById = async (request, response) => {
+
+    try {
+
+        const orderId = validateId(request.params.orderId);
+
+        const orderIdDB = await updateOrderByIdDB(orderId);
+
+        if (orderIdDB === null) {
+            response.status(404).json({ error: "Can't find customer.customerId = " + orderId });
+        }
+        // validar el producto que viene en el body del servicio
+        // crear el objeto producto
+        // mandarselo al updateProductDB como parametro
+        // Verificar con en Postman y con la BD (delfin), que la actualización se esté haciendo correctamente.
+        const body = request.body;
+
+        Order.validate(body);
+
+        const order = new Order(body.orderId, body.orderNumber, body.description, body.address, body.totalPrice, body.paymentMethod, body.orderState, body.orderId);
+
+        await updateOrderByIdDB(orderId, order);
+
+        response.status(200).json({ message: "Order(" + orderId + ") updated successfully." });
 
     } catch (error) {
 
