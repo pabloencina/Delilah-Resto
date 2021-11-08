@@ -3,7 +3,7 @@ import { Administrator } from "../entities/administrator.js"
 
 import { User } from "../entities/user.js"
 
-import { InvalidIdError, InvalidObjectError } from "../error.js";
+import { InvalidIdError, InvalidObjectError, NotFoundError } from "../error.js";
 
 import {
     findAllAdministratorsDB,
@@ -43,7 +43,7 @@ export const getAdministratorById = async (request, response) => {
         const administratorByIdDB = await findAdministratorByIdDB(administratorID)
 
         if (administratorByIdDB === null) {
-            response.status(404).json({ error: "Can't find administrator.administratorId = " + administratorID });
+            throw new NotFoundError("Can't find administrator.administratorId = " + administratorID)
         }
 
         response.status(200).json(administratorByIdDB);
@@ -76,7 +76,7 @@ export const postAdministrators = async (request, response) => {
 
         let administratorSaved = await saveAdministratorDB(administrator);
 
-        response.status(200).json(administratorSaved);
+        response.status(201).json(administratorSaved);
 
     } catch (error) {
 

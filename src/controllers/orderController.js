@@ -3,18 +3,22 @@ import { Order } from "../entities/order.js";
 import { OrderDetail } from "../entities/orderDetail.js"
 
 import {
+    cancelOrderByOrderIdDB,
     findAllOrdersDB,
     findOrderByIdDB,
     findOrderDetailsbyOrderIdsDB,
     findOrdersByCustomerDB,
-    saveOrder,
-    updateOrderByCustomerIdDB,
-    updateOrderByIdDB
+    saveOrder
 } from "../repositories/orderRepository.js"
 
-//import { updateOrderByCustomerIdDB } from "../repositories/orderRepository.js"
+import { findAllProductIdDB } from "../repositories/productRepository.js";
 
-import { InvalidIdError, InvalidObjectError } from "../error.js";
+import {
+    InvalidIdError,
+    InvalidObjectError,
+    BusinessError,
+    NotFoundError
+} from "../error.js";
 
 import { validateId } from "./idValidator.js";
 
@@ -92,7 +96,7 @@ export const getOrderById = async (request, response) => {
 
         if (orderByIdDB === null) {
 
-            response.status(404).json({ error: "Can't find order.customerId = " + orderId });
+            throw new NotFoundError("Can't find order.customerId = " + orderId)
 
         }
 
@@ -122,7 +126,6 @@ export const getOrderById = async (request, response) => {
 
 }
 
-//ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
 export const postOrderByCustomerId = async (request, response) => {
 
     try {
@@ -130,22 +133,25 @@ export const postOrderByCustomerId = async (request, response) => {
         const body = request.body;
 
         Order.validate(body);
-        // Hacer una función del product repository que traiga todos los product ID (array)
-        
+
+        const productIds = await findAllProductIdDB()
 
         for (let i = 0; i < body.orderDetails.length; i++) {
 
             OrderDetail.validate(body.orderDetails[i]);
-            // verificar que el productId del orderDetail[i] esté dentro de ese array 
-            // so da false response.status(409).("message") con el mensaje correspodiente
+            if (!productIds.includes(body.orderDetails[i].productId)) {
+                throw new BusinessError("ProductId = " + body.orderDetails[i].productId + " does not exist in the dataBase.");
+            }
+
         }
+
         const currentDateTime = new Date();
 
         const order = new Order(body.orderNumber, body.description, body.address, body.totalPrice, request.params.customerId, body.paymentMethod, 'NEW', body.orderDetails, currentDateTime)
 
         let orderSaved = await saveOrder(order);
 
-        response.status(200).json(orderSaved);
+        response.status(201).json(orderSaved);
 
     } catch (error) {
 
@@ -154,6 +160,9 @@ export const postOrderByCustomerId = async (request, response) => {
 
         } else if (error instanceof InvalidObjectError) {
             response.status(400).json({ error: error.message });
+
+        } else if (error instanceof BusinessError) {
+            response.status(409).json({ error: error.message });
 
         } else {
             response.status(500).json({ error: error.message });
@@ -162,31 +171,29 @@ export const postOrderByCustomerId = async (request, response) => {
     }
 }
 
-//wertwertwertwertwertwertwertwertwertwertwetwetwertwertwertwertwert
+
 export const putOrderByCustomerId = async (request, response) => {
 
     try {
+console.log(request.body)
+        const orderId = validateId(request.params.orderId);
 
-        const customerId = validateId(request.params.customerId);
+        const orderDB = await findOrderByIdDB(orderId);
 
-        const customerDB = await updateOrderByCustomerIdDB(customerId);
-
-        if (customerDB === null) {
-            response.status(404).json({ error: "Can't find customer.customerId = " + customerId });
+        if (orderDB === null) {
+            throw new NotFoundError("Can't find order.orderId = " + orderId);
         }
-        // validar el producto que viene en el body del servicio
-        // crear el objeto producto
-        // mandarselo al updateProductDB como parametro
-        // Verificar con en Postman y con la BD (delfin), que la actualización se esté haciendo correctamente.
-        const body = request.body;
+        
+        if (request.body.orderState === "CANCELLED" && orderDB.orderState != "DELIVERED") {
+            
+            const orderToCancel = await cancelOrderByOrderIdDB (orderId, "CANCELLED", new Date());
+            response.status(201).json(orderToCancel);
 
-        Order.validate(body);
+        } else {
 
-        const order = new Order(body.orderId, body.orderNumber, body.description, body.address, body.totalPrice, body.paymentMethod, body.orderState, body.customerId);
+            throw new BusinessError("Invalid state transition: " +  orderDB.orderState +" -> " + request.body.orderState)  
 
-        await updateProductDB(customerId, order);
-
-        response.status(200).json({ message: "Order(" + customerId + ") updated successfully." });
+        }
 
     } catch (error) {
 
@@ -194,6 +201,10 @@ export const putOrderByCustomerId = async (request, response) => {
             response.status(400).json({ error: error.message });
         } else if (error instanceof InvalidObjectError) {
             response.status(400).json({ error: error.message });
+        } else if (error instanceof NotFoundError) {
+            response.status(404).json({ error: error.message });
+        } else if (error instanceof BusinessError) {
+            response.status(409).json({ error: error.message });
         } else {
             response.status(500).json({ error: error.message });
         }
@@ -205,26 +216,7 @@ export const putOrderById = async (request, response) => {
 
     try {
 
-        const orderId = validateId(request.params.orderId);
-
-        const orderIdDB = await updateOrderByIdDB(orderId);
-
-        if (orderIdDB === null) {
-            response.status(404).json({ error: "Can't find customer.customerId = " + orderId });
-        }
-        // validar el producto que viene en el body del servicio
-        // crear el objeto producto
-        // mandarselo al updateProductDB como parametro
-        // Verificar con en Postman y con la BD (delfin), que la actualización se esté haciendo correctamente.
-        const body = request.body;
-
-        Order.validate(body);
-
-        const order = new Order(body.orderId, body.orderNumber, body.description, body.address, body.totalPrice, body.paymentMethod, body.orderState, body.orderId);
-
-        await updateOrderByIdDB(orderId, order);
-
-        response.status(200).json({ message: "Order(" + orderId + ") updated successfully." });
+        
 
     } catch (error) {
 
@@ -232,6 +224,8 @@ export const putOrderById = async (request, response) => {
             response.status(400).json({ error: error.message });
         } else if (error instanceof InvalidObjectError) {
             response.status(400).json({ error: error.message });
+        } else if (error instanceof NotFoundError) {
+            response.status(404).json({ error: error.message })
         } else {
             response.status(500).json({ error: error.message });
         }

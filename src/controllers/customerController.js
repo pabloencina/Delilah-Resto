@@ -2,7 +2,7 @@ import { Customer } from "../entities/customer.js"
 
 import { User } from "../entities/user.js"
 
-import { InvalidIdError, InvalidObjectError } from "../error.js"
+import { InvalidIdError, InvalidObjectError, NotFoundError } from "../error.js"
 
 import {
     findAllCustomersDB,
@@ -35,19 +35,21 @@ export const getCustomers = async (request, response) => {
 export const getCustomerById = async (request, response) => {
     //Traer el cliente por Id.
     try {
-        
+
         const customerId = validateId(request.params.customerId)
 
         const customerDB = await findCustomerByIdDB(customerId)
 
         if (customerDB === null) {
-            response.status(404).json({ error: "Can't find customer.customerId = " + customerId });
+            throw new NotFoundError("Can't find customer.customerId = " + customerId)
         }
 
         response.status(200).json(customerDB);
 
     } catch (error) {
-
+        if (error instanceof NotFoundError) {
+            response.status(404).json({ error: error.message })
+        }
         response.status(500).json({ error: "Try later..." })
 
     }
@@ -74,7 +76,7 @@ export const postCustomers = async (request, response) => {
 
         let customerSaved = await saveCustomerDB(customer);
 
-        response.status(200).json(customerSaved);
+        response.status(201).json(customerSaved);
 
     } catch (error) {
 

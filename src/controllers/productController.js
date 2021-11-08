@@ -1,11 +1,15 @@
 import { Product } from "../entities/product.js"
-import { InvalidIdError, InvalidObjectError } from "../error.js"
+
+import { InvalidIdError, InvalidObjectError, NotFoundError } from "../error.js"
+
 import {
+
     findAllProductsDB,
     saveProductDB,
     updateProductDB,
     deleteProductDB,
     findProductByIdDB
+    
 } from "../repositories/productRepository.js"
 
 import { validateId } from "./idValidator.js";
@@ -41,7 +45,7 @@ export const postProducts = async (request, response) => {
 
         let productSaved = await saveProductDB(product);
 
-        response.status(200).json(productSaved);
+        response.status(201).json(productSaved);
 
     } catch (error) {
 
@@ -82,7 +86,7 @@ export const putProducts = async (request, response) => {
 
         await updateProductDB(productId, product);
 
-        response.status(200).json({ message: "Product(" + productId + ") updated successfully." });
+        response.status(201).json({ message: "Product(" + productId + ") updated successfully." });
 
     } catch (error) {
 
@@ -106,7 +110,7 @@ export const deleteProducts = async (request, response) => {
         const productDB = await findProductByIdDB(productId);
 
         if (productDB === null) {
-            response.status(404).json({ error: "Can't find product.productId = " + productId })
+            throw new NotFoundError("Can't find product.productId = " + productId);
         }
 
         await deleteProductDB(productId);
@@ -116,6 +120,8 @@ export const deleteProducts = async (request, response) => {
     } catch (error) {
         if (error instanceof InvalidIdError) {
             response.status(400).json({ error: error.message });
+        } else if (error instanceof NotFoundError) {
+            response.status(404).json({ error: error.message })
         } else {
             response.status(500).json({ error: error.message });
         }

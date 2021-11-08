@@ -134,8 +134,8 @@ export const saveOrder = async (order) => {
 
 }
 //wretwertwertwertwertwertwertwertwertwertwetrwertwertwertwertwertwertwert
-
-export const updateOrderByCustomerIdDB = async (customerId,order) => {
+/*
+export const updateOrderByCustomerIdDB = async (customerId, order) => {
 
     try {
 
@@ -154,6 +154,38 @@ export const updateOrderByCustomerIdDB = async (customerId,order) => {
         console.error(error.message);
         throw error;
     }
+}
+*/
+export const cancelOrderByOrderIdDB = async (orderId, orderState, orderCancelledDateTime) => {
+
+    try {
+
+        const result = await db.query(
+            "UPDATE `Order` SET orderState = ?, orderCancelledDateTime = ?  WHERE orderId = ?",
+            {
+                type: db.QueryTypes.UPDATE,
+                replacements: [orderState, orderCancelledDateTime, orderId],
+            }
+        );
+
+        const order = await db.query(
+            "SELECT * FROM `Order` WHERE orderId = ?",
+            { type: db.QueryTypes.SELECT, replacements: [orderId] }
+        )
+
+        if (order.length == 0) {
+            return null;
+        }
+
+        return order[0];
+
+    } catch (error) {
+
+        console.error(error.message);
+        throw error;
+
+    }
+
 }
 
 export const updateOrderByIdDB = async (orderId) => {

@@ -1,5 +1,5 @@
 
-import { InvalidIdError } from "../error.js"
+import { InvalidIdError, NotFoundError } from "../error.js"
 import jsonwebtoken from "jsonwebtoken";
 import { findUserByEmailAndPasswordDB } from "../repositories/userRepository.js"
 import { findAdministratorByUserIdDB } from "../repositories/administratorRepository.js";
@@ -16,7 +16,7 @@ export const postLogin = async (request, response) => {
         let userRecovered = await findUserByEmailAndPasswordDB(email, password)
 
         if (userRecovered === null) {
-            response.status(404).json({ error: "Wrong email or password" });
+            throw new NotFoundError("Wrong email or password");
         }
         
         let administratorRecovered = await findAdministratorByUserIdDB(userRecovered.userId);
@@ -53,7 +53,8 @@ export const postLogin = async (request, response) => {
 
         if (error instanceof InvalidIdError) {
             response.status(400).json({ error: error.message });
-
+        } else if (error instanceof NotFoundError) {
+            response.status(404).json({ error: error.message })
         } else {
             response.status(500).json({ error: error.message });
         }

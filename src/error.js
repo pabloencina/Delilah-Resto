@@ -9,3 +9,16 @@ export class InvalidObjectError extends Error {
         super(message);
     }
 }
+
+export class BusinessError extends Error {
+    constructor(message){
+        super(message);
+    }
+}
+
+
+export class NotFoundError extends Error {
+    constructor(message){
+        super(message);
+    }
+}

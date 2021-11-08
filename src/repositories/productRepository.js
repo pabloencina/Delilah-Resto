@@ -9,12 +9,42 @@ export const findAllProductsDB = async () => {
     */
     try {
 
-        const productsDB = await db.query(
+        let productsDB = await db.query(
             "SELECT * FROM Product",
             { type: db.QueryTypes.SELECT }
         );
         console.log(productsDB);
         return productsDB;
+
+    } catch (error) {
+
+        console.error(error.message);
+        throw error;
+
+    }
+
+}
+
+export const findAllProductIdDB = async () => {
+
+    try {
+
+        const productsIdDB = await db.query(
+            "SELECT productId FROM Product",
+            { type: db.QueryTypes.SELECT }
+        );
+
+        let productIds = [];
+
+        for (let i = 0; i < productsIdDB.length; i++) {
+            
+            productIds.push(productsIdDB[i].productId);
+            
+        }
+
+
+        return productIds;
+
 
     } catch (error) {
 
@@ -57,7 +87,7 @@ export const saveProductDB = async (product) => {
     try {
 
         const responseDB = await db.query(
-            
+
             "INSERT INTO Product (productId, productNumber, productName, productPrice, productPhoto) values(?,?,?,?,?)",
 
             {
