@@ -4,8 +4,10 @@ import { OrderDetail } from "../entities/orderDetail.js"
 
 import {
     cancelOrderByOrderIdDB,
-    newOrderByOrderIdDB,
+    preparedOrderByOrderIdDB,
     confirmOrderByOrderIdDB,
+    deliverOrderByOrderIdDB,
+    sentOrderByOrderIdDB,
     findAllOrdersDB,
     findOrderByIdDB,
     findOrderDetailsbyOrderIdsDB,
@@ -186,27 +188,60 @@ export const putOrderByCustomerId = async (request, response) => {
             throw new NotFoundError("Can't find order.orderId = " + orderId);
         }
 
-        if ( request.body.orderState === "NEW" ) {
-            const newOrder = await newOrderByOrderIdDB (orderId, "NEW", new Date());
-            response.status(201).json(newOrder);
-        } else {
-            throw new BusinessError( "Invalid state transition" )  
-        }
-
 
         if (request.body.orderState === "CONFIRMED") {
-            const orderToConfirm = await confirmOrderByOrderIdDB (orderId, "CONFIRMED", new Date());
-            response.status(201).json(orderToConfirm);
-        } else {
-            throw new BusinessError("Invalid state transition: " +  orderDB.orderState +" -> " + request.body.orderState)  
+
+            if (orderDB.orderState === "NEW") {
+                const orderToConfirm = await confirmOrderByOrderIdDB(orderId, "CONFIRMED", new Date());
+                response.status(201).json(orderToConfirm);
+            } else {
+                throw new BusinessError("Invalid state transition: " + orderDB.orderState + " -> " + request.body.orderState)
+            }
+
         }
-        
+
+
+        if (request.body.orderState === "PREPARED") {
+
+            if (orderDB.orderState === "CONFIRMED") {
+                const orderToPrepar = await preparedOrderByOrderIdDB(orderId, "PREPARED", new Date());
+                response.status(201).json(orderToPrepar);
+            } else {
+                throw new BusinessError("Invalid state transition: " + orderDB.orderState + " -> " + request.body.orderState)
+            }
+
+        }
+
+
+        if (request.body.orderState === "SENT") {
+
+            if (orderDB.orderState === "PREPARED") {
+                const orderToSent = await sentOrderByOrderIdDB(orderId, "SENT", new Date());
+                response.status(201).json(orderToSent);
+
+            } else {
+                throw new BusinessError("Invalid state transition: " + orderDB.orderState + " -> " + request.body.orderState)
+            }
+
+        }
+
+        if (request.body.orderState === "DELIVERED") {
+
+            if (orderDB.orderState === "SENT") {
+                const orderToDeliver = await deliverOrderByOrderIdDB(orderId, "DELIVERED", new Date());
+                response.status(201).json(orderToDeliver);
+            } else {
+                throw new BusinessError("Invalid state transition: " + orderDB.orderState + " -> " + request.body.orderState)
+            }
+
+        }
+
 
         if (request.body.orderState === "CANCELLED" && orderDB.orderState != "DELIVERED") {
-            const orderToCancel = await cancelOrderByOrderIdDB (orderId, "CANCELLED", new Date());
+            const orderToCancel = await cancelOrderByOrderIdDB(orderId, "CANCELLED", new Date());
             response.status(201).json(orderToCancel);
         } else {
-            throw new BusinessError("Invalid state transition: " +  orderDB.orderState +" -> " + request.body.orderState)  
+            throw new BusinessError("Invalid state transition: " + orderDB.orderState + " -> " + request.body.orderState)
         }
 
 
@@ -231,7 +266,7 @@ export const putOrderById = async (request, response) => {
 
     try {
 
-        
+
 
     } catch (error) {
 
