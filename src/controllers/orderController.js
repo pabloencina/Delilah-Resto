@@ -4,6 +4,8 @@ import { OrderDetail } from "../entities/orderDetail.js"
 
 import {
     cancelOrderByOrderIdDB,
+    newOrderByOrderIdDB,
+    confirmOrderByOrderIdDB,
     findAllOrdersDB,
     findOrderByIdDB,
     findOrderDetailsbyOrderIdsDB,
@@ -175,7 +177,7 @@ export const postOrderByCustomerId = async (request, response) => {
 export const putOrderByCustomerId = async (request, response) => {
 
     try {
-console.log(request.body)
+
         const orderId = validateId(request.params.orderId);
 
         const orderDB = await findOrderByIdDB(orderId);
@@ -183,17 +185,30 @@ console.log(request.body)
         if (orderDB === null) {
             throw new NotFoundError("Can't find order.orderId = " + orderId);
         }
+
+        if ( request.body.orderState === "NEW" ) {
+            const newOrder = await newOrderByOrderIdDB (orderId, "NEW", new Date());
+            response.status(201).json(newOrder);
+        } else {
+            throw new BusinessError( "Invalid state transition" )  
+        }
+
+
+        if (request.body.orderState === "CONFIRMED") {
+            const orderToConfirm = await confirmOrderByOrderIdDB (orderId, "CONFIRMED", new Date());
+            response.status(201).json(orderToConfirm);
+        } else {
+            throw new BusinessError("Invalid state transition: " +  orderDB.orderState +" -> " + request.body.orderState)  
+        }
         
+
         if (request.body.orderState === "CANCELLED" && orderDB.orderState != "DELIVERED") {
-            
             const orderToCancel = await cancelOrderByOrderIdDB (orderId, "CANCELLED", new Date());
             response.status(201).json(orderToCancel);
-
         } else {
-
             throw new BusinessError("Invalid state transition: " +  orderDB.orderState +" -> " + request.body.orderState)  
-
         }
+
 
     } catch (error) {
 

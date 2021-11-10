@@ -83,9 +83,9 @@ export const findOrderDetailsbyOrderIdsDB = async (orderIds) => {
         throw error;
 
     }
-
+    
 }
-//fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+
 
 export const saveOrder = async (order) => {
 
@@ -133,29 +133,8 @@ export const saveOrder = async (order) => {
     }
 
 }
-//wretwertwertwertwertwertwertwertwertwertwetrwertwertwertwertwertwertwert
-/*
-export const updateOrderByCustomerIdDB = async (customerId, order) => {
 
-    try {
 
-        const result = await db.query(
-            "UPDATE `Order` SET orderNumber = ?, description = ?, address = ?, totalPrice = ?, paymentMethod = ?, orderState = ?,  WHERE customerId = ?",
-            {
-                type: db.QueryTypes.UPDATE,
-                replacements: [order.orderNumber, order.description, order.address, order.totalPrice, order.paymentMethod, order.orderState, customerId],
-            }
-        );
-        console.log(result)
-        return result;
-
-    } catch (error) {
-
-        console.error(error.message);
-        throw error;
-    }
-}
-*/
 export const cancelOrderByOrderIdDB = async (orderId, orderState, orderCancelledDateTime) => {
 
     try {
@@ -187,6 +166,73 @@ export const cancelOrderByOrderIdDB = async (orderId, orderState, orderCancelled
     }
 
 }
+
+
+export const newOrderByOrderIdDB = async (orderId, orderState, orderCreateDateTime) => {
+
+    try {
+
+        const result = await db.query(
+            "UPDATE `Order` SET orderState = ?, orderCreateDateTime = ?  WHERE orderId = ?",
+            {
+                type: db.QueryTypes.UPDATE,
+                replacements: [orderState, orderCreateDateTime, orderId],
+            }
+        );
+
+        const order = await db.query(
+            "SELECT * FROM `Order` WHERE orderId = ?",
+            { type: db.QueryTypes.SELECT, replacements: [orderId] }
+        )
+
+        if (order.length == 0) {
+            return null;
+        }
+
+        return order[0];
+
+    } catch (error) {
+
+        console.error(error.message);
+        throw error;
+
+    }
+
+}
+
+
+export const confirmOrderByOrderIdDB = async (orderId, orderState, orderConfirmedDateTime) => {
+
+    try {
+
+        const result = await db.query(
+            "UPDATE `Order` SET orderState = ?, orderConfirmedDateTime = ?  WHERE orderId = ?",
+            {
+                type: db.QueryTypes.UPDATE,
+                replacements: [orderState, orderConfirmedDateTime, orderId],
+            }
+        );
+
+        const order = await db.query(
+            "SELECT * FROM `Order` WHERE orderId = ?",
+            { type: db.QueryTypes.SELECT, replacements: [orderId] }
+        )
+
+        if (order.length == 0) {
+            return null;
+        }
+
+        return order[0];
+
+    } catch (error) {
+
+        console.error(error.message);
+        throw error;
+
+    }
+
+}
+
 
 export const updateOrderByIdDB = async (orderId) => {
 
