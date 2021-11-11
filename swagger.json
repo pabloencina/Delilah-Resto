@@ -37,47 +37,11 @@
     }
   ],
   "paths": {
-    "/customers": {
-      "get": {
-        "summary": "Check user list",
-        "tags": [
-          "customers"
-        ],
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "How many items to return at one time (max 100)",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "a paged array of customers",
-            "headers": {
-              "x-next": {
-                "type": "string",
-                "description": "A link to the next page of responses"
-              }
-            },
-            "schema": {
-              "$ref": "#/definitions/customers"
-            }
-          },
-          "default": {
-            "description": "unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      },
+    "/checkin": {
       "post": {
         "summary": "Check in",
         "tags": [
-          "customers"
+          "checkin"
         ],
         "parameters": [
           {
@@ -93,6 +57,35 @@
         "responses": {
           "201": {
             "description": "Null response"
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/customers": {
+      "get": {
+        "summary": "A list of all the customers",
+        "tags": [
+          "customers"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "a  array of customers",
+            "headers": {
+              "x-next": {
+                "type": "string",
+                "description": "A link to the next page of responses"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/customers"
+            }
           },
           "default": {
             "description": "unexpected error",
@@ -195,31 +188,26 @@
           {
             "name": "customerId",
             "in": "path",
-            "description": "the id of the customer to get the orders",
+            "description": "the id of the customer to create the order",
             "required": true,
             "type": "integer",
             "format": "int32"
           },
           {
-            "name": "limit",
-            "in": "query",
-            "description": "How many items to return at one time (max 100)",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
+            "in": "body",
+            "name": "body",
+            "description": "Order type object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/order"
+            }
           }
         ],
         "responses": {
-          "200": {
-            "description": "a paged array of orders",
-            "headers": {
-              "x-next": {
-                "type": "string",
-                "description": "A link to the next page of responses"
-              }
-            },
+          "201": {
+            "description": "The order just created",
             "schema": {
-              "$ref": "#/definitions/orders"
+              "$ref": "#/definitions/order"
             }
           },
           "default": {
@@ -241,7 +229,7 @@
           {
             "name": "customerId",
             "in": "path",
-            "description": "the id of the customer to get the orders",
+            "description": "the id of the customer to get the order",
             "required": true,
             "type": "integer",
             "format": "int32"
@@ -253,27 +241,13 @@
             "required": true,
             "type": "integer",
             "format": "int32"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "How many items to return at one time (max 100)",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
           }
         ],
         "responses": {
           "200": {
-            "description": "a paged array of orders",
-            "headers": {
-              "x-next": {
-                "type": "string",
-                "description": "A link to the next page of responses"
-              }
-            },
+            "description": "The order requested.",
             "schema": {
-              "$ref": "#/definitions/orders"
+              "$ref": "#/definitions/order"
             }
           },
           "default": {
@@ -307,25 +281,21 @@
             "format": "int32"
           },
           {
-            "name": "limit",
-            "in": "query",
-            "description": "How many items to return at one time (max 100)",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
+            "in": "body",
+            "name": "body",
+            "description": "Order type object. Only be read the field orderState. To cancell send orderState='CANCELLED'",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/order"
+            }
           }
         ],
         "responses": {
-          "200": {
-            "description": "a paged array of orders",
-            "headers": {
-              "x-next": {
-                "type": "string",
-                "description": "A link to the next page of responses"
-              }
-            },
+          "201": {
+            "description": "The updated order with the new status",
+            
             "schema": {
-              "$ref": "#/definitions/orders"
+              "$ref": "#/definitions/order"
             }
           },
           "default": {
@@ -344,14 +314,7 @@
           "administrators"
         ],
         "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "How many items to return at one time (max 100)",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
+
         ],
         "responses": {
           "200": {
@@ -392,7 +355,10 @@
         ],
         "responses": {
           "201": {
-            "description": "Null response"
+            "description": "The Administrator created with Id",
+            "schema": {
+              "$ref": "#/definitions/administrator"
+            }
           },
           "default": {
             "description": "unexpected error",
@@ -417,20 +383,14 @@
             "required": true,
             "type": "integer",
             "format": "int32"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Administrator type object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/administrator"
-            }
           }
         ],
         "responses": {
-          "201": {
-            "description": "Null response"
+          "200": {
+            "description": "The requested administrator",
+            "schema": {
+              "$ref": "#/definitions/administrator"
+            }
           },
           "default": {
             "description": "unexpected error",
@@ -447,19 +407,10 @@
         "tags": [
           "orders"
         ],
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "How many items to return at one time (max 100)",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
-            "description": "a paged array of orders",
+            "description": "a array of orders",
             "headers": {
               "x-next": {
                 "type": "string",
@@ -481,7 +432,7 @@
     },
     "/orders/{orderId}": {
       "put": {
-        "summary": "get an order",
+        "summary": "Change order State ('CONFIRMED', 'PREPARED', 'SENT', 'DELIVERED', 'CANCELLED')",
         "tags": [
           "orders"
         ],
@@ -493,11 +444,20 @@
             "required": true,
             "type": "integer",
             "format": "int32"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Order type object. Only be read the field orderState.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/order"
+            }
           }
         ],
         "responses": {
-          "200": {
-            "description": "an order object",
+          "201": {
+            "description": "The order object with the current status",
             "schema": {
               "$ref": "#/definitions/order"
             }
@@ -517,16 +477,7 @@
         "tags": [
           "products"
         ],
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "How many items to return at one time (max 100)",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "a paged array of product",
@@ -566,7 +517,10 @@
         ],
         "responses": {
           "201": {
-            "description": "Null response"
+            "description": "The created product with Id",
+            "schema": {
+              "$ref": "#/definitions/product"
+            }
           },
           "default": {
             "description": "unexpected error",
@@ -604,7 +558,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Null response"
+            "description": "A message with the confirmation of update"
           },
           "default": {
             "description": "unexpected error",

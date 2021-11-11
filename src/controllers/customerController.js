@@ -2,7 +2,7 @@ import { Customer } from "../entities/customer.js"
 
 import { User } from "../entities/user.js"
 
-import { InvalidIdError, InvalidObjectError, NotFoundError } from "../error.js"
+import { BusinessError, InvalidIdError, InvalidObjectError, NotFoundError } from "../error.js"
 
 import {
     findAllCustomersDB,
@@ -11,7 +11,7 @@ import {
     saveCustomerDB,
 } from "../repositories/customerRepository.js"
 
-import { saveUserDB } from "../repositories/userRepository.js";
+import { findAllUserEmailDB, saveUserDB } from "../repositories/userRepository.js";
 import { validateId } from "./idValidator.js";
 
 
@@ -65,6 +65,13 @@ export const postCustomers = async (request, response) => {
         const userBody = request.body.user;
 
         User.validate(userBody);
+
+        const userEmails = await findAllUserEmailDB();
+
+        if (userEmails.includes(userBody.email)) {
+            throw new BusinessError("User with email: " + userBody.email + " already exist in the dataBase.");
+        }
+
 
         const user = new User(null, userBody.name, userBody.surname, userBody.email, userBody.phone, userBody.password, false);
 

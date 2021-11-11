@@ -42,7 +42,7 @@ export const expressJwtHandler = expressJwt({
     secret: secretJWT,
     algorithms: ["HS256"],
 }).unless({
-    path: ["/login"]
+    path: ["/login", "/checkin"]
 });
 
 server.use(

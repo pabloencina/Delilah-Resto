@@ -89,3 +89,33 @@ export const saveUserDB = async (user) => {
         throw error;
     }
 }
+
+
+export const findAllUserEmailDB = async () => {
+
+    try {
+
+        const UserEmaildDB = await db.query(
+            "SELECT email FROM User",
+            { type: db.QueryTypes.SELECT }
+        );
+
+        let userEmails = [];
+
+        for (let i = 0; i < UserEmaildDB.length; i++) {
+            
+            userEmails.push(UserEmaildDB[i].email);
+            
+        }
+
+
+        return userEmails;
+
+
+    } catch (error) {
+
+        console.error(error.message);
+        throw error;
+
+    }
+}
