@@ -20,23 +20,62 @@
   ],
   "tags": [
     {
-      "name": "customers",
-      "description": "customer Magnament"
+      "name": "checkin",
+      "description": "Customer registration"
     },
     {
-      "name": "administrators",
-      "description": "Administrator Magnament"
-    },
-    {
-      "name": "orders",
-      "description": "Order Magnament"
+      "name": "login",
+      "description": "Login for customer and administrator"
     },
     {
       "name": "products",
-      "description": "Product Magnamnet"
+      "description": "Product magnamnet"
+    },
+    {
+      "name": "customers",
+      "description": "customer and its orders magnament"
+    },
+    {
+      "name": "administrators",
+      "description": "Administrator magnament"
+    },
+    {
+      "name": "orders",
+      "description": "Order magnament"
     }
+
   ],
   "paths": {
+    "/login": {
+      "post": {
+        "summary": "login",
+        "tags": [
+          "login"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Send only email and password. No Auth required.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Token"
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/checkin": {
       "post": {
         "summary": "Check in",
@@ -47,7 +86,7 @@
           {
             "in": "body",
             "name": "body",
-            "description": "customer type object",
+            "description": "customer type object. No Auth required.",
             "required": true,
             "schema": {
               "$ref": "#/definitions/customer"
@@ -56,7 +95,10 @@
         ],
         "responses": {
           "201": {
-            "description": "Null response"
+            "description": "The customer created.",
+                        "schema": {
+              "$ref": "#/definitions/customer"
+            }
           },
           "default": {
             "description": "unexpected error",
@@ -259,7 +301,7 @@
         }
       },
       "put": {
-        "summary": "Cancel the order",
+        "summary": "Cancel the order for the customer.",
         "tags": [
           "customers"
         ],
@@ -293,7 +335,6 @@
         "responses": {
           "201": {
             "description": "The updated order with the new status",
-            
             "schema": {
               "$ref": "#/definitions/order"
             }
@@ -313,9 +354,7 @@
         "tags": [
           "administrators"
         ],
-        "parameters": [
-
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "a paged array of administrators",
@@ -448,7 +487,7 @@
           {
             "in": "body",
             "name": "body",
-            "description": "Order type object. Only be read the field orderState.",
+            "description": "Order type object. Send onlythe field orderState.",
             "required": true,
             "schema": {
               "$ref": "#/definitions/order"
@@ -655,10 +694,6 @@
         "user": {
           "type": "object",
           "$ref": "#/definitions/user"
-        },
-        "order": {
-          "type": "object",
-          "$ref": "#/definitions/order"
         }
       }
     },
@@ -732,10 +767,12 @@
           "type": "number"
         },
         "paymentMethod": {
-          "type": "string"
+          "type": "string",
+          "enum":["CASH", "CARD"]
         },
         "orderState": {
-          "type": "string"
+          "type": "string",
+          "enum":["NEW","CONFIRMED","PREPARED","SENT","DELIVERED", "CANCELLED"]
         }
       }
     },
