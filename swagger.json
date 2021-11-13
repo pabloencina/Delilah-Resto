@@ -43,7 +43,6 @@
       "name": "orders",
       "description": "Order magnament"
     }
-
   ],
   "paths": {
     "/login": {
@@ -96,7 +95,7 @@
         "responses": {
           "201": {
             "description": "The customer created.",
-                        "schema": {
+            "schema": {
               "$ref": "#/definitions/customer"
             }
           },
@@ -470,6 +469,36 @@
       }
     },
     "/orders/{orderId}": {
+      "get": {
+        "summary": "See order list",
+        "tags": [
+          "orders"
+        ],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "the id of the order to be modified",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The order requested",
+            "schema": {
+              "$ref": "#/definitions/order"
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
       "put": {
         "summary": "Change order State ('CONFIRMED', 'PREPARED', 'SENT', 'DELIVERED', 'CANCELLED')",
         "tags": [
@@ -739,7 +768,7 @@
         "totalPrice": {
           "type": "number"
         },
-        "orderDetail": {
+        "orderDetails": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/order-detail"
@@ -768,11 +797,21 @@
         },
         "paymentMethod": {
           "type": "string",
-          "enum":["CASH", "CARD"]
+          "enum": [
+            "CASH",
+            "CARD"
+          ]
         },
         "orderState": {
           "type": "string",
-          "enum":["NEW","CONFIRMED","PREPARED","SENT","DELIVERED", "CANCELLED"]
+          "enum": [
+            "NEW",
+            "CONFIRMED",
+            "PREPARED",
+            "SENT",
+            "DELIVERED",
+            "CANCELLED"
+          ]
         }
       }
     },
@@ -790,7 +829,7 @@
         "productPrice": {
           "type": "number"
         },
-        "productQuantify": {
+        "productQuantity": {
           "type": "number"
         },
         "productId": {

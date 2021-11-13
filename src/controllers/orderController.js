@@ -31,14 +31,52 @@ export const getOrders = async (request, response) => {
 
     try {
 
-        let orders = await findAllOrdersDB();
-        //Buscar todos los usuarios 
-        //En bucle recorrer todos los customers y agregarle el usuario que corresponde
-        response.status(200).json(orders);
+        let ordersDB = await findAllOrdersDB();
+
+
+        let orderIds = []
+        //Construir un array con todos los orderId para buscar en la base de datos todos orderDtails que corrsponden. 
+        for (let i = 0; i < ordersDB.length; i++) {
+
+            orderIds.push(ordersDB[i].orderId)
+
+        }
+        //llamar la funcion de base de datos que devuelve las OrderDetails.
+        let orderDetails = await findOrderDetailsbyOrderIdsDB(orderIds)
+        //Realcionar los Orderdetails con el Order que correspnde.
+        for (let j = 0; j < ordersDB.length; j++) {
+
+            let orderDetail = [];
+
+            for (let i = 0; i < orderDetails.length; i++) {
+
+                if (orderDetails[i].orderId === ordersDB[j].orderId) {
+                    orderDetail.push(orderDetails[i]);
+                }
+
+            }
+
+            ordersDB[j].orderDetails = orderDetail;
+
+        }
+
+        response.status(200).json(ordersDB);
 
     } catch (error) {
 
-        response.status(500).json({ error: "Try later..." })
+
+        if (error instanceof InvalidIdError) {
+            response.status(400).json({ error: error.message });
+
+        } else if (error instanceof InvalidObjectError) {
+            response.status(400).json({ error: error.message });
+
+        } else if (error instanceof BusinessError) {
+            response.status(409).json({ error: error.message });
+
+        } else {
+            response.status(500).json({ error: error.message });
+        }
 
     }
 }
@@ -52,7 +90,7 @@ export const getOrdersByCustomer = async (request, response) => {
         const customerId = validateId(request.params.customerId)
 
         let ordersByCustomer = await findOrdersByCustomerDB(customerId)
-        //Construir un array con todos los orderId para buscar en la base de datos todos orderDtails que corrsponden. 
+
         let orderIds = []
 
         for (let i = 0; i < ordersByCustomer.length; i++) {
@@ -60,9 +98,9 @@ export const getOrdersByCustomer = async (request, response) => {
             orderIds.push(ordersByCustomer[i].orderId)
 
         }
-        //llamar la funcion de base de datos que devuelve las OrderDetails.
+
         let orderDetails = await findOrderDetailsbyOrderIdsDB(orderIds)
-        //Realcionar los Orderdetails con el Order que correspnde.
+
         for (let j = 0; j < ordersByCustomer.length; j++) {
 
             let orderDetail = [];
@@ -83,7 +121,19 @@ export const getOrdersByCustomer = async (request, response) => {
 
     } catch (error) {
 
-        response.status(500).json({ error: "Try later..." })
+
+        if (error instanceof InvalidIdError) {
+            response.status(400).json({ error: error.message });
+
+        } else if (error instanceof InvalidObjectError) {
+            response.status(400).json({ error: error.message });
+
+        } else if (error instanceof BusinessError) {
+            response.status(409).json({ error: error.message });
+
+        } else {
+            response.status(500).json({ error: error.message });
+        }
 
     }
 
@@ -100,7 +150,7 @@ export const getOrderById = async (request, response) => {
 
         if (orderByIdDB === null) {
 
-            throw new NotFoundError("Can't find order.customerId = " + orderId)
+            throw new NotFoundError("Can't find order.Id = " + orderId)
 
         }
 
@@ -124,7 +174,18 @@ export const getOrderById = async (request, response) => {
 
     } catch (error) {
 
-        response.status(500).json({ error: "Try later..." })
+        if (error instanceof InvalidIdError) {
+            response.status(400).json({ error: error.message });
+
+        } else if (error instanceof InvalidObjectError) {
+            response.status(400).json({ error: error.message });
+
+        } else if (error instanceof BusinessError) {
+            response.status(409).json({ error: error.message });
+
+        } else {
+            response.status(500).json({ error: error.message });
+        }
 
     }
 
@@ -177,6 +238,43 @@ export const postOrderByCustomerId = async (request, response) => {
 
 
 export const putOrderByCustomerId = async (request, response) => {
+
+    try {
+
+        const orderId = validateId(request.params.orderId);
+
+        const orderDB = await findOrderByIdDB(orderId);
+
+        if (orderDB === null) {
+            throw new NotFoundError("Can't find order.orderId = " + orderId);
+        }
+
+
+        if (request.body.orderState === "CANCELLED" && orderDB.orderState != "DELIVERED") {
+            const orderToCancel = await cancelOrderByOrderIdDB(orderId, "CANCELLED", new Date());
+            response.status(201).json(orderToCancel);
+        } else {
+            throw new BusinessError("Invalid state transition: " + orderDB.orderState + " -> " + request.body.orderState)
+        }
+
+
+    } catch (error) {
+
+        if (error instanceof InvalidIdError) {
+            response.status(400).json({ error: error.message });
+        } else if (error instanceof InvalidObjectError) {
+            response.status(400).json({ error: error.message });
+        } else if (error instanceof NotFoundError) {
+            response.status(404).json({ error: error.message });
+        } else if (error instanceof BusinessError) {
+            response.status(409).json({ error: error.message });
+        } else {
+            response.status(500).json({ error: error.message });
+        }
+    }
+}
+
+export const putOrder = async (request, response) => {
 
     try {
 
@@ -255,27 +353,6 @@ export const putOrderByCustomerId = async (request, response) => {
             response.status(404).json({ error: error.message });
         } else if (error instanceof BusinessError) {
             response.status(409).json({ error: error.message });
-        } else {
-            response.status(500).json({ error: error.message });
-        }
-    }
-}
-
-
-export const putOrderById = async (request, response) => {
-
-    try {
-
-
-
-    } catch (error) {
-
-        if (error instanceof InvalidIdError) {
-            response.status(400).json({ error: error.message });
-        } else if (error instanceof InvalidObjectError) {
-            response.status(400).json({ error: error.message });
-        } else if (error instanceof NotFoundError) {
-            response.status(404).json({ error: error.message })
         } else {
             response.status(500).json({ error: error.message });
         }

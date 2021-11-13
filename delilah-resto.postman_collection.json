@@ -1,0 +1,644 @@
+{
+	"info": {
+		"_postman_id": "0d5282a1-c477-40f2-8ecd-9b2d3283221d",
+		"name": "delilah-resto",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Checkin (Customer)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsIm5hbWUiOiJQYWJsbyIsInN1cm5hbWUiOiJFbmNpbmEiLCJlbWFpbCI6ImVuY2luYS5wZEBnbWFpbC5jb20iLCJwaG9uZSI6IjI5OTQyMzE5MTciLCJwYXNzd29yZCI6InBhc3N3b3JkNDMyMSIsImFkbWluIjp0cnVlLCJjdXN0b21lcklkIjowLCJpYXQiOjE2MzY3NDY5MTQsImV4cCI6MTYzNjc1NDExNH0.6B9HApOtLuaHRTtHUQplTnEfZMC91CuAdaoisu-Skp0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerId\": 0,\n  \"address\": \"Av. 24 de Septiembre 215\",\n  \"user\": {\n    \"userId\": 0,\n    \"name\": \"Amparo\",\n    \"surname\": \"Levinston\",\n    \"email\": \"amparo.lev@hotmail.com\",\n    \"phone\": \"299877752\",\n    \"password\": \"constrasena159\",\n    \"admin\": false\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/checkin",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"checkin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LogIn (existing Admin or Customer)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"rodrigo.l@hotmail.com\",\n  \"password\": \"pass1234\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/login",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List of all products",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsIm5hbWUiOiJQYWJsbyIsInN1cm5hbWUiOiJFbmNpbmEiLCJlbWFpbCI6ImVuY2luYS5wZEBnbWFpbC5jb20iLCJwaG9uZSI6IjI5OTQyMzE5MTciLCJwYXNzd29yZCI6InBhc3N3b3JkNDMyMSIsImFkbWluIjp0cnVlLCJjdXN0b21lcklkIjowLCJpYXQiOjE2MzY3NjkyMjIsImV4cCI6MTYzNjc3NjQyMn0.RCu3bd8BuAPQFjD_Yd5k0yg2_RSxS3BOYqmORUhDYUs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/products/",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"products",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a product (Admin)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsIm5hbWUiOiJQYWJsbyIsInN1cm5hbWUiOiJFbmNpbmEiLCJlbWFpbCI6ImVuY2luYS5wZEBnbWFpbC5jb20iLCJwaG9uZSI6IjI5OTQyMzE5MTciLCJwYXNzd29yZCI6InBhc3N3b3JkNDMyMSIsImFkbWluIjp0cnVlLCJjdXN0b21lcklkIjowLCJpYXQiOjE2MzY3NDY5MTQsImV4cCI6MTYzNjc1NDExNH0.6B9HApOtLuaHRTtHUQplTnEfZMC91CuAdaoisu-Skp0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"productId\": 0,\n  \"productNumber\": 5,\n  \"productName\": \"Fideos con veg salteados\",\n  \"productPrice\": 650,\n  \"productPhoto\": \"null\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/products",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modify a product (Admin)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsIm5hbWUiOiJQYWJsbyIsInN1cm5hbWUiOiJFbmNpbmEiLCJlbWFpbCI6ImVuY2luYS5wZEBnbWFpbC5jb20iLCJwaG9uZSI6IjI5OTQyMzE5MTciLCJwYXNzd29yZCI6InBhc3N3b3JkNDMyMSIsImFkbWluIjp0cnVlLCJjdXN0b21lcklkIjowLCJpYXQiOjE2MzY3NDY2NjAsImV4cCI6MTYzNjc1Mzg2MH0.DezSBJncOFSiWm0hf-Ym3gjEwoGaRJ0E7dZpEIdC3jo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"productId\": 0,\n  \"productNumber\": 0,\n  \"productName\": \"Hamburguesa de chia\",\n  \"productPrice\": 800,\n  \"productPhoto\": \"string\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/products/8",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"products",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a product (Admin)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/products/4",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"products",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List of all customers (Admin)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsIm5hbWUiOiJQYWJsbyIsInN1cm5hbWUiOiJFbmNpbmEiLCJlbWFpbCI6ImVuY2luYS5wZEBnbWFpbC5jb20iLCJwaG9uZSI6IjI5OTQyMzE5MTciLCJwYXNzd29yZCI6InBhc3N3b3JkNDMyMSIsImFkbWluIjp0cnVlLCJjdXN0b21lcklkIjowLCJpYXQiOjE2MzY3NjkyMjIsImV4cCI6MTYzNjc3NjQyMn0.RCu3bd8BuAPQFjD_Yd5k0yg2_RSxS3BOYqmORUhDYUs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/customers",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a customer (Customer)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsIm5hbWUiOiJKdWFuIENhcmxvcyIsInN1cm5hbWUiOiJNZW5kZXoiLCJlbWFpbCI6Imp1YW5jYXJsb3NAZ21haWwuY29tIiwicGhvbmUiOiIwMjk5NDIzMTkxNyIsInBhc3N3b3JkIjoiMTIzNCIsImFkbWluIjpmYWxzZSwiY3VzdG9tZXJJZCI6MSwiaWF0IjoxNjM1MjAxNDcwLCJleHAiOjE2MzUyMDIwNzB9.6v4AlYdDK4Z3RfePpWnoCyO4-dKeeV-F99wlW7MhOac",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/customers/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"customers",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get orders by customer (Customer)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsIm5hbWUiOiJSb2RyaWdvIiwic3VybmFtZSI6Ikxlc2Nhbm8iLCJlbWFpbCI6InJvZHJpZ28ubEBob3RtYWlsLmNvbSIsInBob25lIjoiMjk5NTU1MTIzIiwicGFzc3dvcmQiOiJwYXNzMTIzNCIsImFkbWluIjpmYWxzZSwiY3VzdG9tZXJJZCI6MSwiaWF0IjoxNjM2NzY5OTc3LCJleHAiOjE2MzY3NzcxNzd9.egQ0dE3v3rhpdloPrX42yRXmansSkaw3kfPUk4U1nj0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/customers/1/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"customers",
+						"1",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create orders by customerId (Customer)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsIm5hbWUiOiJDYXJtZWxhIiwic3VybmFtZSI6IlJvZHJpZ3VleiIsImVtYWlsIjoiY2FybWVsYS5ydEBob3RtYWlsLmNvbSIsInBob25lIjoiMjk5MzIxNDQ0IiwicGFzc3dvcmQiOiJwYXNzd29yZDEyMzQ1NiIsImFkbWluIjpmYWxzZSwiY3VzdG9tZXJJZCI6MiwiaWF0IjoxNjM2NzU2NzgwLCJleHAiOjE2MzY3NjM5ODB9.HR_E2tETpJJYj7Doze_g09GQT3RZmV0mJg572UBf9vY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"orderId\": 0,\n        \"orderNumber\": 0,\n        \"description\": \"los fideos extra salsa de soja\",\n        \"address\": \"Felix Frias 290\",\n        \"totalPrice\": 650,\n        \"orderDetails\": [\n          {\n            \"orderDetailId\": 0,\n            \"productPrice\": 650,\n            \"productQuantity\": 1,\n            \"productId\": 5,\n            \"orderId\": 0\n          }\n        ],\n        \"orderCreateDateTime\": \"string\",\n        \"orderConfirmedDateTime\": \"string\",\n        \"orderPreparedDateTime\": \"string\",\n        \"orderSentDateTime\": \"string\",\n        \"orderDeliveredDateTime\": \"string\",\n        \"orderCancelledDateTime\": \"string\",\n        \"customerId\": 0,\n        \"paymentMethod\": \"CASH\",\n        \"orderState\": \"CANCELLED\"\n      }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/customers/2/orders",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"customers",
+						"2",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get order by orderId (Customer)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsIm5hbWUiOiJSb2RyaWdvIiwic3VybmFtZSI6Ikxlc2Nhbm8iLCJlbWFpbCI6InJvZHJpZ28ubEBob3RtYWlsLmNvbSIsInBob25lIjoiMjk5NTU1MTIzIiwicGFzc3dvcmQiOiJwYXNzMTIzNCIsImFkbWluIjpmYWxzZSwiY3VzdG9tZXJJZCI6MSwiaWF0IjoxNjM2NzY5OTc3LCJleHAiOjE2MzY3NzcxNzd9.egQ0dE3v3rhpdloPrX42yRXmansSkaw3kfPUk4U1nj0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/customers/1/orders/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"customers",
+						"1",
+						"orders",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cancel the order (Customer)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsIm5hbWUiOiJDYXJtZWxhIiwic3VybmFtZSI6IlJvZHJpZ3VleiIsImVtYWlsIjoiY2FybWVsYS5ydEBob3RtYWlsLmNvbSIsInBob25lIjoiMjk5MzIxNDQ0IiwicGFzc3dvcmQiOiJwYXNzd29yZDEyMzQ1NiIsImFkbWluIjpmYWxzZSwiY3VzdG9tZXJJZCI6MiwiaWF0IjoxNjM2NzY1MDc2LCJleHAiOjE2MzY3NzIyNzZ9.opsuv2S2JntVQEscdvbgUlc1ECRSJecaxIXVBTpe7II",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\n    \"orderState\": \"CANCELLED\"\n}\n  ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/customers/2/orders/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"customers",
+						"2",
+						"orders",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List of all administrators (Admin)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsIm5hbWUiOiJKdWFuIENhcmxvcyIsInN1cm5hbWUiOiJNZW5kZXoiLCJlbWFpbCI6Imp1YW5jYXJsb3NAZ21haWwuY29tIiwicGhvbmUiOiIwMjk5NDIzMTkxNyIsInBhc3N3b3JkIjoiMTIzNCIsImFkbWluIjpmYWxzZSwiY3VzdG9tZXJJZCI6MSwiaWF0IjoxNjM0OTMwNzI0LCJleHAiOjE2MzQ5MzEzMjR9.MpdkL3KuVj4nncXHKTBgC9N5birxnVZ3OKxTGPtbLzQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/administrators",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"administrators"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create an adminstrator (Admin)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsIm5hbWUiOiJKdWFuIENhcmxvcyIsInN1cm5hbWUiOiJNZW5kZXoiLCJlbWFpbCI6Imp1YW5jYXJsb3NAZ21haWwuY29tIiwicGhvbmUiOiIwMjk5NDIzMTkxNyIsInBhc3N3b3JkIjoiMTIzNCIsImFkbWluIjpmYWxzZSwiY3VzdG9tZXJJZCI6MSwiaWF0IjoxNjM1ODQ3Nzk0LCJleHAiOjE2MzU4NDgzOTR9.TG1icRkw-t0WnQgfae2rlvyd8ejn6d-UtHv4VVtdq0I",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"administratorId\": 0,\n  \"identificationNumber\": \"33.285138\",\n  \"user\": {\n    \"userId\": 0,\n    \"name\": \"Juan Pablo\",\n    \"surname\": \"Bustamante\",\n    \"email\": \"bustamante.jp@gmail.com\",\n    \"phone\": \"2994587125\",\n    \"password\": \"bustamante12345678\"\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/administrators",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"administrators"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get administrator by Id (Admin)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsIm5hbWUiOiJKdWFuIFBhYmxvIiwic3VybmFtZSI6IkJ1c3RhbWFudGUiLCJlbWFpbCI6ImJ1c3RhbWFudGUuanBAZ21haWwuY29tIiwicGhvbmUiOiIyOTk0NTg3MTI1IiwicGFzc3dvcmQiOiJidXN0YW1hbnRlMTIzNDU2NzgiLCJhZG1pbiI6dHJ1ZSwiY3VzdG9tZXJJZCI6MCwiaWF0IjoxNjM1Njc2MTU5LCJleHAiOjE2MzU2NzY3NTl9.RNEFvMhqlHKwAuF4JQxhY5IxNGRqSkH4q86dnfIU6Fk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/administrators/5",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"administrators",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List of all orders (Admin)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsIm5hbWUiOiJQYWJsbyIsInN1cm5hbWUiOiJFbmNpbmEiLCJlbWFpbCI6ImVuY2luYS5wZEBnbWFpbC5jb20iLCJwaG9uZSI6IjI5OTQyMzE5MTciLCJwYXNzd29yZCI6InBhc3N3b3JkNDMyMSIsImFkbWluIjp0cnVlLCJjdXN0b21lcklkIjowLCJpYXQiOjE2MzY3NjkyMjIsImV4cCI6MTYzNjc3NjQyMn0.RCu3bd8BuAPQFjD_Yd5k0yg2_RSxS3BOYqmORUhDYUs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/orders",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get order by Id (Admin)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsIm5hbWUiOiJQYWJsbyIsInN1cm5hbWUiOiJFbmNpbmEiLCJlbWFpbCI6ImVuY2luYS5wZEBnbWFpbC5jb20iLCJwaG9uZSI6IjI5OTQyMzE5MTciLCJwYXNzd29yZCI6InBhc3N3b3JkNDMyMSIsImFkbWluIjp0cnVlLCJjdXN0b21lcklkIjowLCJpYXQiOjE2MzY3NjkyMjIsImV4cCI6MTYzNjc3NjQyMn0.RCu3bd8BuAPQFjD_Yd5k0yg2_RSxS3BOYqmORUhDYUs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/orders/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"orders",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change order State (Admin)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsIm5hbWUiOiJQYWJsbyIsInN1cm5hbWUiOiJFbmNpbmEiLCJlbWFpbCI6ImVuY2luYS5wZEBnbWFpbC5jb20iLCJwaG9uZSI6IjI5OTQyMzE5MTciLCJwYXNzd29yZCI6InBhc3N3b3JkNDMyMSIsImFkbWluIjp0cnVlLCJjdXN0b21lcklkIjowLCJpYXQiOjE2MzY3NTkwNTQsImV4cCI6MTYzNjc2NjI1NH0.mEFT1x1pOLjQZo4TtsrSNGx7B-O2y5Oum21bAKdBLqY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"orderState\": \"CANCELLED\"\n      }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/orders/10",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"orders",
+						"10"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,8 +1,9 @@
 import { Router } from "express";
 
 import {
+    getOrderById,
     getOrders,
-    putOrderById
+    putOrder
 } from "../controllers/orderController.js";
 
 import { validateAdminstrator, validateRequestedCustomer } from "../security/validateRoles.js";
@@ -10,8 +11,7 @@ import { validateAdminstrator, validateRequestedCustomer } from "../security/val
 const router = Router();
 
 router.get( "/orders", validateAdminstrator, getOrders );
-router.get( "/orders/:orderId", validateRequestedCustomer );
-router.post( "/orders", validateRequestedCustomer );
-router.put( "/orders/:orderId", validateAdminstrator, putOrderById )
+router.get( "/orders/:orderId", validateAdminstrator, getOrderById );
+router.put( "/orders/:orderId", validateAdminstrator, putOrder);
 
 export default router;
