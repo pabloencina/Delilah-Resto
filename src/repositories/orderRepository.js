@@ -297,3 +297,26 @@ export const confirmOrderByOrderIdDB = async (orderId, orderState, orderConfirme
 
 }
 
+export const deleteOrderDB = async (orderId) => {
+
+    try {
+
+        const result0 = await db.query(
+            "DELETE FROM OrderDetail WHERE orderId = ?",
+            { type: db.QueryTypes.DELETE, replacements: [orderId] }
+        );
+
+        const result = await db.query(
+            "DELETE FROM `Order` WHERE orderId = ?",
+            { type: db.QueryTypes.DELETE, replacements: [orderId] }
+        );
+
+
+        return result;
+
+    } catch (error) {
+
+        console.error(error.message);
+        throw error;
+    }
+}

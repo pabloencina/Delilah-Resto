@@ -12,7 +12,8 @@ import {
     findOrderByIdDB,
     findOrderDetailsbyOrderIdsDB,
     findOrdersByCustomerDB,
-    saveOrder
+    saveOrder,
+    deleteOrderDB
 } from "../repositories/orderRepository.js"
 
 import { findAllProductIdDB } from "../repositories/productRepository.js";
@@ -356,5 +357,34 @@ export const putOrder = async (request, response) => {
         } else {
             response.status(500).json({ error: error.message });
         }
+    }
+}
+
+export const deleteOrder = async (request, response) => {
+
+    try {
+
+        const orderId = validateId(request.params.orderId);
+
+        const orderDB = await findOrderByIdDB(orderId);
+
+        if (orderDB === null) {
+            throw new NotFoundError("Can't find order.orderId = " + orderId);
+        }
+
+        await deleteOrderDB(orderId);
+
+        response.status(200).json({ message: "Order(" + orderId + ") deleted successfully." });
+
+    } catch (error) {
+
+        if (error instanceof InvalidIdError) {
+            response.status(400).json({ error: error.message });
+        } else if (error instanceof NotFoundError) {
+            response.status(404).json({ error: error.message })
+        } else {
+            response.status(500).json({ error: error.message });
+        }
+
     }
 }

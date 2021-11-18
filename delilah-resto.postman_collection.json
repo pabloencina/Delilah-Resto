@@ -59,7 +59,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"email\": \"rodrigo.l@hotmail.com\",\n  \"password\": \"pass1234\"\n}",
+					"raw": "{\n  \"email\": \"encina.pd@gmail.com\",\n  \"password\": \"password4321\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -90,7 +90,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsIm5hbWUiOiJQYWJsbyIsInN1cm5hbWUiOiJFbmNpbmEiLCJlbWFpbCI6ImVuY2luYS5wZEBnbWFpbC5jb20iLCJwaG9uZSI6IjI5OTQyMzE5MTciLCJwYXNzd29yZCI6InBhc3N3b3JkNDMyMSIsImFkbWluIjp0cnVlLCJjdXN0b21lcklkIjowLCJpYXQiOjE2MzY3NjkyMjIsImV4cCI6MTYzNjc3NjQyMn0.RCu3bd8BuAPQFjD_Yd5k0yg2_RSxS3BOYqmORUhDYUs",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsIm5hbWUiOiJQYWJsbyIsInN1cm5hbWUiOiJFbmNpbmEiLCJlbWFpbCI6ImVuY2luYS5wZEBnbWFpbC5jb20iLCJwaG9uZSI6IjI5OTQyMzE5MTciLCJwYXNzd29yZCI6InBhc3N3b3JkNDMyMSIsImFkbWluIjp0cnVlLCJjdXN0b21lcklkIjowLCJpYXQiOjE2MzcyNDkyNzUsImV4cCI6MTYzNzI1NjQ3NX0.0Mi2PSarCPv2T6sCP8nsFjciiGY1E231KiSLLkqHY9Q",
 							"type": "string"
 						}
 					]
@@ -635,6 +635,44 @@
 					"path": [
 						"orders",
 						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete order (Admin)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsIm5hbWUiOiJQYWJsbyIsInN1cm5hbWUiOiJFbmNpbmEiLCJlbWFpbCI6ImVuY2luYS5wZEBnbWFpbC5jb20iLCJwaG9uZSI6IjI5OTQyMzE5MTciLCJwYXNzd29yZCI6InBhc3N3b3JkNDMyMSIsImFkbWluIjp0cnVlLCJjdXN0b21lcklkIjowLCJpYXQiOjE2MzcyNDkyNzUsImV4cCI6MTYzNzI1NjQ3NX0.0Mi2PSarCPv2T6sCP8nsFjciiGY1E231KiSLLkqHY9Q",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/orders/6",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"orders",
+						"6"
 					]
 				}
 			},
